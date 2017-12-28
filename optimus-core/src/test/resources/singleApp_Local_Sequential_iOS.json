@@ -1,0 +1,30 @@
+{
+  "executionDetails": {
+    "appium_js_path": "/usr/local/bin/appium",
+    "appium_node_path": "/usr/local/bin/node"
+  },
+  "testFeed": [
+    {
+      "belongsTo": "rider",
+      "runsOn": "simulator",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "app-release.app",
+          "platformName": "iOS",
+          "deviceName":"iPhone 6",
+          "platformVersion": "9.3"
+        },
+        "iOSOnlyCapabilities": {
+          "launchTimeout": 300000
+        }
+      },
+      "deviceState": {
+        "clearNotification": false,
+        "clearADBLogs": false,
+        "grantAllPermissions": false,
+        "captureVideo": false
+      }
+    }
+  ]
+}

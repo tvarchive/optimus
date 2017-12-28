@@ -1,0 +1,80 @@
+{
+  "executionDetails": {
+    "appium_js_path": "/usr/local/bin/appium",
+    "appium_node_path": "/usr/local/bin/node",
+    "sauce": {
+      "sauceUserName": "testUser",
+      "sauceAccessKey": "testKey"
+    }
+  },
+  "testFeed": [
+    {
+      "belongsTo": "rider",
+      "runsOn": "device",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "app-staging-release.apk",
+          "automationName": "",
+          "platformName": "Android",
+          "platformVersion": "10",
+          "deviceName": "Android",
+          "browserName": "",
+          "newCommandTimeout": 180,
+          "language": "",
+          "locale": "",
+          "udid": "",
+          "orientation": "",
+          "autoWebview": false,
+          "noReset": false,
+          "fullReset": false
+        },
+        "androidOnlyCapabilities": {
+          "appActivity": "com.tvapp.app.Splash",
+          "appPackage": "com.tvapp.app.staging",
+          "appWaitActivity": "",
+          "appWaitPackage": "",
+          "appWaitDuration": 30000,
+          "deviceReadyTimeout": 5,
+          "androidCoverage": "",
+          "enablePerformanceLogging": false,
+          "androidDeviceReadyTimeout": 30,
+          "androidInstallTimeout": 90000,
+          "adbPort": 5037,
+          "androidDeviceSocket": "",
+          "avd": "",
+          "avdLaunchTimeout": 300000,
+          "avdReadyTimeout": 300000,
+          "avdArgs": "",
+          "useKeystore": false,
+          "keystorePath": "",
+          "keystorePassword": "",
+          "keyAlias": "",
+          "keyPassword": "",
+          "chromedriverExecutable": "",
+          "autoWebviewTimeout": 2000,
+          "intentAction": "",
+          "intentCategory": "",
+          "intentFlags": "",
+          "optionalIntentArguments": "",
+          "dontStopAppOnReset": false,
+          "unicodeKeyboard": false,
+          "resetKeyboard": false,
+          "noSign": false,
+          "ignoreUnimportantViews": false,
+          "disableAndroidWatchers": false,
+          "chromeOptions": "",
+          "recreateChromeDriverSessions": false,
+          "nativeWebScreenshot": false,
+          "androidScreenshotPath": ""
+        }
+      },
+      "deviceState": {
+        "clearNotification": true,
+        "clearADBLogs": true,
+        "grantAllPermissions": true,
+        "captureVideo": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "executionDetails": {
+    "appium_js_path": "/usr/local/bin/appium",
+    "appium_node_path": "/usr/local/bin/node"
+  },
+  "testFeed": [
+    {
+      "belongsTo": "rider",
+      "runsOn": "emulator",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "app-staging-release.apk",
+          "platformName": "Android",
+          "newCommandTimeout": 180
+        },
+        "androidOnlyCapabilities": {
+          "appPackage": "",
+          "appActivity": "",
+          "noSign": true
+        }
+      },
+      "deviceState": {
+        "clearNotification": true,
+        "clearADBLogs": true,
+        "grantAllPermissions": true,
+        "captureVideo": true
+      }
+    },
+    {
+      "belongsTo": "driver",
+      "runsOn": "emulator",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "tvappdriver-staging-release.apk",
+          "platformName": "Android",
+          "newCommandTimeout": 180
+        },
+        "androidOnlyCapabilities": {
+          "appPackage": "",
+          "appActivity": "",
+          "noSign": true
+        }
+      },
+      "deviceState": {
+        "clearNotification": true,
+        "clearADBLogs": true,
+        "grantAllPermissions": true,
+        "captureVideo": true
+      }
+    }
+  ]
+}

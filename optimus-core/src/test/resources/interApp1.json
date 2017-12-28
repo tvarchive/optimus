@@ -1,0 +1,38 @@
+[
+  {
+    "belongsTo": "rider",
+    "runsOn": "emulator",
+    "isOn":"iOS",
+    "appDetails": {
+      "appDir": "app",
+      "appName": "app-staging-release.apk",
+      "appPackage": "com.tvapp.app.staging",
+      "appActivity": "com.tvapp.app.Splash"
+    },
+    "deviceState": {
+      "clearNotification": true,
+      "fakeGPSLatLong": "1,2",
+      "clearADBLogs": true,
+      "grantAllPermissions": true,
+      "captureVideo": true
+    }
+  },
+  {
+    "belongsTo": "driver",
+    "runsOn": "emulator",
+    "isOn":"android",
+    "appDetails": {
+      "appDir": "app",
+      "appName": "tvappdriver-staging-release.apk",
+      "appPackage": "com.nostratech.tvapp.driver",
+      "appActivity": "common.activity.splash.SplashActivity"
+    },
+    "deviceState": {
+      "clearNotification": true,
+      "fakeGPSLatLong": "1,2",
+      "clearADBLogs": true,
+      "grantAllPermissions": true,
+      "captureVideo": true
+    }
+  }
+]

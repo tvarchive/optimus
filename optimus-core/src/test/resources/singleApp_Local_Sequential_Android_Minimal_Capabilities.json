@@ -1,0 +1,40 @@
+{
+  "executionDetails": {
+    "appium_js_path": "/usr/local/bin/appium",
+    "appium_node_path": "/usr/local/bin/node"
+  },
+  "testFeed": [
+    {
+      "belongsTo": "rider",
+      "runsOn": "device",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "app-staging-release.apk",
+          "platformName": "Android",
+          "platformVersion": "7.0",
+          "browserName": "",
+          "newCommandTimeout": 180,
+          "language": "",
+          "locale": "",
+          "orientation": "",
+          "autoWebview": false,
+          "noReset": false,
+          "fullReset": false
+        },
+        "androidOnlyCapabilities": {
+          "appActivity": "com.tvapp.app.Splash",
+          "appPackage": "com.tvapp.app.staging",
+          "avdLaunchTimeout": 300000,
+          "useKeystore": false
+        }
+      },
+      "deviceState": {
+        "clearNotification": true,
+        "clearADBLogs": true,
+        "grantAllPermissions": true,
+        "captureVideo": true
+      }
+    }
+  ]
+}

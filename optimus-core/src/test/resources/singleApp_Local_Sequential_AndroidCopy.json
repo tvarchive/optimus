@@ -1,0 +1,30 @@
+{
+  "executionDetails": {
+    "runMode": "Parallel",
+    "deviceFragmentation": true,
+    "numberOfDevices": 2
+  },
+  "testFeed": [
+    {
+      "belongsTo": "rider",
+      "runsOn": "device",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "app-release.apk",
+          "platformName": "Android"
+        },
+        "androidOnlyCapabilities": {
+          "appActivity": "com.optimus.app.Splash",
+          "appPackage": "com.optimus.app.staging"
+        }
+      },
+      "deviceState": {
+        "clearNotification": true,
+        "clearADBLogs": true,
+        "grantAllPermissions": true,
+        "captureVideo": true
+      }
+    }
+  ]
+}

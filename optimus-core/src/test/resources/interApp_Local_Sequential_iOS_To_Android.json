@@ -1,0 +1,88 @@
+{
+  "executionDetails": {
+    "appium_js_path": "/usr/local/bin/appium",
+    "appium_node_path": "/usr/local/bin/node"
+  },
+  "testFeed": [
+    {
+      "belongsTo": "rider",
+      "runsOn": "simulator",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "app-release.app",
+          "automationName":"XCUITest",
+          "platformName": "iOS",
+          "platformVersion": "9.3",
+          "deviceName": "iPhone 6",
+          "browserName": "",
+          "newCommandTimeout": 180,
+          "language": "",
+          "locale": "",
+          "udid": "",
+          "orientation": "",
+          "autoWebview": false,
+          "noReset": false,
+          "fullReset": false
+        },
+        "iOSOnlyCapabilities": {
+          "calendarFormat": "",
+          "bundleId": "",
+          "udid": "",
+          "launchTimeout": 60,
+          "locationServicesEnabled": "",
+          "locationServicesAuthorized": "",
+          "autoAcceptAlerts": "",
+          "autoDismissAlerts": "",
+          "nativeInstrumentsLib": "",
+          "nativeWebTap": "",
+          "safariInitialUrl": "",
+          "safariAllowPopups": "",
+          "safariIgnoreFraudWarning": "",
+          "safariOpenLinksInBackground": "",
+          "keepKeyChains": "",
+          "localizableStringsDir": "",
+          "processArguments": "",
+          "interKeyDelay": 1,
+          "showIOSLog": "",
+          "sendKeyStrategy": "",
+          "screenshotWaitTimeout": 1,
+          "waitForAppScript": "",
+          "webviewConnectRetries": 1,
+          "appName": ""
+        }
+      },
+      "deviceState": {
+        "clearNotification": true,
+        "clearADBLogs": true,
+        "grantAllPermissions": true,
+        "captureVideo": true
+      }
+    },
+    {
+      "belongsTo": "driver",
+      "runsOn": "emulator",
+      "appDir": "app",
+      "optimusDesiredCapabilities": {
+        "appiumServerCapabilities": {
+          "app": "app-release.apk",
+          "platformName": "Android",
+          "platformVersion": "5.0",
+          "deviceName": "Android",
+          "newCommandTimeout": 180
+        },
+        "androidOnlyCapabilities": {
+          "appActivity": "",
+          "appPackage": "",
+          "noSign": true
+        }
+      },
+      "deviceState": {
+        "clearNotification": true,
+        "clearADBLogs": true,
+        "grantAllPermissions": true,
+        "captureVideo": true
+      }
+    }
+  ]
+}

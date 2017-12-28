@@ -1,0 +1,10 @@
+group 'com.testvagrant.optimus'
+version '1.0-SNAPSHOT'
+
+
+dependencies {
+    compile project(':optimus-monitor')
+
+    compile group: 'org.apache.opennlp', name: 'opennlp-tools', version: '1.6.0'
+    compile group: 'org.apache.opennlp', name: 'opennlp-uima', version: '1.6.0'
+}

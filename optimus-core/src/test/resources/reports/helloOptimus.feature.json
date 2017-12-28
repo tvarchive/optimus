@@ -1,0 +1,90 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 19691013165,
+              "status": "passed"
+            },
+            "match": {
+              "location": "StartingSteps.setUp(Scenario)"
+            }
+          }
+        ],
+        "line": 4,
+        "name": "Hello Optimus",
+        "description": "",
+        "id": "optimus-feature-one;hello-optimus",
+        "after": [
+          {
+            "result": {
+              "duration": 865701624,
+              "status": "passed"
+            },
+            "match": {
+              "location": "StartingSteps.e2eTearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 243522088,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "I have optimus hello application",
+            "match": {
+              "location": "HelloOptimusSteps.iHaveOptimusHelloApplication()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 869861,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "I open it on either emulator, simulator or device on any platform",
+            "match": {
+              "location": "HelloOptimusSteps.iOpenItOnEitherEmulatorSimulatorOrDeviceOnAnyPlatform()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 5020368946,
+              "status": "passed"
+            },
+            "output": [
+              "something",
+              "192.168.57.101:5555"
+            ],
+            "line": 7,
+            "name": "I should be able to say a hello to optimus",
+            "match": {
+              "location": "HelloOptimusSteps.iShouldBeAbleToSayAHelloToOptimus()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 3,
+            "name": "@helloOptimus"
+          }
+        ]
+      }
+    ],
+    "name": "Optimus feature one",
+    "description": "",
+    "id": "optimus-feature-one",
+    "keyword": "Feature",
+    "uri": "/Users/sukeshkumar/Development/projects/optimusTemplate/build/RunnableFeatures/helloOptimus.feature"
+  }
+]

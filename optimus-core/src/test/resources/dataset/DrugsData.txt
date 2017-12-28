@@ -1,0 +1,1 @@
+<START:medicine> Augmentin-Duo <END> is a penicillin antibiotic that contains two medicines - <START:medicine> amoxicillin trihydrate <END> and <START:medicine> potassium clavulanate <END>. They work together to kill certain types of bacteria and are used to treat certain types of bacterial infections.

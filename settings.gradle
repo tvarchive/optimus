@@ -1,0 +1,7 @@
+rootProject.name = 'optimus'
+
+include ':optimus-core'
+include ':optimus-commons'
+include ':optimus-monitor'
+include ':mdb'
+
