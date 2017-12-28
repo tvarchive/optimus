@@ -2,6 +2,7 @@ package com.testvagrant.monitor.clients;
 
 import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.commons.exceptions.DeviceEngagedException;
+import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.exceptions.DeviceReleaseException;
 import com.testvagrant.monitor.requests.Device;
 import com.testvagrant.monitor.responses.DevicesResponse;
@@ -10,13 +11,12 @@ import io.restassured.response.Response;
 
 import java.util.List;
 
-import static com.testvagrant.monitor.clients.EndPoints.BASE_END_POINT;
 import static com.testvagrant.monitor.utils.DeviceToDeviceDetailsMapper.getDeviceDetailsFromDevices;
 import static io.restassured.RestAssured.given;
 
 public class DevicesClient {
 
-    private final String DEVICES = BASE_END_POINT+"/devices";
+    private final String DEVICES = MongoService.getMongoService()+"/devices";
 
     public Response storeDevices(List<Device> devices) {
         final Response[] response = new Response[1];

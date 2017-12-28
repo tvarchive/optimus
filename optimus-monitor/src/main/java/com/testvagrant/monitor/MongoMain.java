@@ -17,9 +17,15 @@
 
 package com.testvagrant.monitor;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import com.testvagrant.commons.entities.RunConfiguration;
+import com.testvagrant.commons.parser.RunConfigParser;
+import com.testvagrant.commons.utils.JsonUtil;
 import com.testvagrant.monitor.clients.BuildsClient;
+import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.exceptions.MongoInstanceException;
 
 import java.io.IOException;
@@ -29,17 +35,38 @@ import static com.testvagrant.monitor.radiator.MongoDriverService.mongoService;
 
 public class MongoMain {
 
-    private static String mongoMainString;
+    private String appJson;
+    private String runConfig;
+    private static String mongoService;
 
-    public static void main(String[] args) throws MongoInstanceException {
+    public MongoMain(String testFeedName) {
+        appJson =  new JsonUtil().getAppJson(testFeedName+".json");
+        runConfig = getRunConfig();
+    }
+
+    private String getRunConfig() {
+        JsonObject testFeed = new Gson().fromJson(appJson,JsonObject.class);
+        JsonObject executionDetails = testFeed.getAsJsonObject("executionDetails");
+        String runConfig;
+        try {
+            runConfig = executionDetails.get("runConfig").getAsString();
+        } catch (Exception e) {
+            runConfig = "default";
+        }
+        return runConfig;
+    }
+
+    public void createOptimusDb() throws MongoInstanceException {
         System.out.println("Getting started with mongo main");
         try {
             mongoService().start();
         } catch (IOException e) {
             throw new MongoInstanceException();
         }
-        MongoClient mongoClient = MongoBase.getInstance();
-        MongoDatabase optimus = mongoClient.getDatabase("optimus");
+        RunConfiguration runConfiguration = RunConfigParser.getRunConfiguration(runConfig);
+        MongoClient mongoClient = MongoBase.newInstance(runConfiguration);
+        MongoDatabase optimus = mongoClient.getDatabase(runConfiguration.getDbname());
+        MongoService.setMongoService(runConfiguration.getDbservice());
         createCollection(optimus, "scenarios");
         createCollection(optimus, "builds");
         createCollection(optimus, "devices");
@@ -49,20 +76,27 @@ public class MongoMain {
         new BuildsClient().createNewBuild();
     }
 
-    public static void closeMongo() {
+    public void closeMongo() {
         MongoBase.close();
     }
 
-    private static void createCollection(MongoDatabase dbname, String collectionName) {
+    private void createCollection(MongoDatabase dbname, String collectionName) {
         if (!collectionExists(dbname, collectionName)) {
             System.out.println("Created collection " + collectionName);
             dbname.createCollection(collectionName);
         }
     }
 
-    private static boolean collectionExists(MongoDatabase dbName, String collectionName) {
+    private boolean collectionExists(MongoDatabase dbName, String collectionName) {
         return dbName.listCollectionNames()
                 .into(new ArrayList<>()).contains(collectionName);
     }
 
+    public static String getMongoService() {
+        return mongoService;
+    }
+
+    public static void setMongoService(String mongoService) {
+        MongoMain.mongoService = mongoService;
+    }
 }

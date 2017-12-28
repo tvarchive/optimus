@@ -18,38 +18,30 @@
 package com.testvagrant.monitor;
 
 import com.mongodb.MongoClient;
-
-import static com.testvagrant.monitor.radiator.MongoPort.mongoPort;
+import com.mongodb.MongoClientURI;
+import com.testvagrant.commons.entities.RunConfiguration;
 
 public class MongoBase {
 
     private static MongoClient mongoClient = null;
+    private static RunConfiguration runConfiguration = new RunConfiguration();
 
     //Singleton
     private MongoBase() {
     }
 
 
+    public static MongoClient newInstance(RunConfiguration runConfiguration) {
+        MongoBase.runConfiguration = runConfiguration;
+        return getInstance();
+    }
 
     public synchronized static MongoClient getInstance() {
         resetMongoClientIfRequired();
         if(mongoClient==null) {
-//            MongoClientURI uri = new MongoClientURI(
-//                    "mongodb://krishnanandb:Krishna%400405@firstcluster-shard-00-00-unuus.mongodb.net:27017,firstcluster-shard-00-01-unuus.mongodb.net:27017,firstcluster-shard-00-02-unuus.mongodb.net:27017/optimus?ssl=true&replicaSet=FirstCluster-shard-0&authSource=admin"
-//            );
-//             mongoClient = new MongoClient(uri);
-            mongoClient = new MongoClient(optimusHost(), optimusPort());
+            mongoClient = new MongoClient(new MongoClientURI(runConfiguration.getDburi()));
         }
         return mongoClient;
-    }
-
-
-    private static String optimusHost() {
-        return "localhost";
-    }
-
-    private static int optimusPort() {
-        return mongoPort().getPort();
     }
 
 
@@ -64,7 +56,7 @@ public class MongoBase {
             try {
                 mongoClient.getConnectPoint();
             } catch (Exception e) {
-                mongoClient = new MongoClient(optimusHost(), optimusPort());
+                mongoClient = new MongoClient(new MongoClientURI(runConfiguration.getDburi()));
             }
         }
     }

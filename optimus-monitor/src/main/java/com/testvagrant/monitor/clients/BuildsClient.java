@@ -1,5 +1,6 @@
 package com.testvagrant.monitor.clients;
 
+import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.requests.Build;
 import com.testvagrant.monitor.requests.builders.BuildsRequestBuilder;
 import com.testvagrant.monitor.responses.BuildsResponse;
@@ -7,14 +8,14 @@ import io.restassured.response.Response;
 
 import java.util.List;
 
-import static com.testvagrant.monitor.clients.EndPoints.BASE_END_POINT;
 import static io.restassured.RestAssured.given;
 
 public class BuildsClient {
 
-    private final String BUILDS = BASE_END_POINT+"/builds";
+    private final String BUILDS = MongoService.getMongoService()+"/builds";
 
     public Build createNewBuild() {
+        System.out.println("Builds Path" +BUILDS);
         Build buildsRequest = new BuildsRequestBuilder().build();
         Response post = given()
                 .header("Content-Type", "application/json")

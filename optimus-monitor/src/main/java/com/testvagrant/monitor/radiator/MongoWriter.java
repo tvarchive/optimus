@@ -105,8 +105,12 @@ public class MongoWriter extends MongoIO {
 
     public void notifyScenarioCompletion(SmartBOT smartBOT) {
         Scenario scenario = new ScenariosClient().findRelevantScenario(latestBuildID,smartBOT.getScenario().getName(), getLocation(smartBOT));
+        Date endTime = new Date();
+        long timeTaken = (endTime.getTime() - scenario.getStartTime().getTime()) / 1000;
         scenario.setStatus(smartBOT.getScenario().getStatus().lowerCaseName());
         scenario.setCompleted(true);
+        scenario.setEndTime(new Date());
+        scenario.setTimeTaken(Math.toIntExact(timeTaken));
         setScenarioLocation(smartBOT,scenario);
         new ScenariosClient().updateScenario(latestBuildID,scenario);
     }

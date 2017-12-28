@@ -11,13 +11,19 @@ public class RunConfigParser {
 
     private static String runConfigName;
     private static final String runConfigLocation = System.getProperty("user.dir")+"/src/test/resources/META-INF/runconfigs/";
-    private static final String runConfigExtension = ".yaml";
+    private static final String runConfigExtension = ".yml";
+    private static final String runConfigExtension1 = ".yaml";
 
     public static RunConfiguration getRunConfiguration(String runConfigName) {
         RunConfiguration runConfiguration = new RunConfiguration();
         if(runConfigName.equalsIgnoreCase("default"))
             return runConfiguration;
-        File configFile = new File(String.format("%s%s%s",runConfigLocation,runConfigName,runConfigExtension));
+        File configFile = null;
+        try {
+           configFile  = new File(String.format("%s%s%s", runConfigLocation, runConfigName, runConfigExtension));
+        } catch (Exception e) {
+            configFile  = new File(String.format("%s%s%s", runConfigLocation, runConfigName, runConfigExtension1));
+        }
         if(configFile.exists()) {
             try {
                runConfiguration =  mapper(configFile).map(RunConfiguration.class);

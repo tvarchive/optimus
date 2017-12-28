@@ -1,13 +1,13 @@
 package com.testvagrant.monitor.clients;
 
+import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.requests.Intellisense;
 import io.restassured.response.Response;
 
-import static com.testvagrant.monitor.clients.EndPoints.BASE_END_POINT;
 import static io.restassured.RestAssured.given;
 
 public class IntellisenseClient {
-    private final String INTELLISENSE = BASE_END_POINT+"/intellisense";
+    private final String INTELLISENSE = MongoService.getMongoService()+"/intellisense";
 
 
     public Intellisense recordExceptionSense(Intellisense intellisense) {

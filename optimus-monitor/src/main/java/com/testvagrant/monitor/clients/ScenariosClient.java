@@ -1,5 +1,6 @@
 package com.testvagrant.monitor.clients;
 
+import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.requests.Scenario;
 import com.testvagrant.monitor.requests.Screenshot;
 import io.restassured.response.Response;
@@ -7,12 +8,11 @@ import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.testvagrant.monitor.clients.EndPoints.BASE_END_POINT;
 import static io.restassured.RestAssured.given;
 
 public class ScenariosClient {
 
-    private final String SCENARIOS = BASE_END_POINT+"/scenarios";
+    private final String SCENARIOS = MongoService.getMongoService()+"/scenarios";
     public Scenario createNewScenario(Scenario scenario, List<Integer> lines) {
         if(lines.size()>1) {
             Integer scenariosCount = getNumberOfExistingScenariosByName(scenario.getBuildId(), scenario.getScenarioName());
@@ -58,7 +58,7 @@ public class ScenariosClient {
         Response screenshotPost = given()
                 .header("Content-Type", "application/json")
                 .body(screenshot)
-                .post(BASE_END_POINT+"/screenshots");
+                .post(MongoService.getMongoService()+"/screenshots");
         return screenshotPost.asString();
     }
 

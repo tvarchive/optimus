@@ -29,14 +29,13 @@ public class OptimusMain {
         String setupCompleted = System.getProperty("setupCompleted");
         if(setupCompleted==null) {
             setupRunConfiguration(testFeed);
-            MongoMain.main(new String[]{});
+            new MongoMain(testFeed).createOptimusDb();
             new DeviceRegistrar().setUpDevices(new DeviceMatrix(testFeed));
         }
     }
 
     public static void setupRunConfiguration(String testFeed) {
         String runConfig = new OptimusConfigParser(testFeed).getExecutionDetails().getRunConfig();
-//        new MongoRunConfiguration(runConfig);
     }
 
     public static void main(String[] args) {

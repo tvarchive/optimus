@@ -43,7 +43,6 @@ public class ExecutionDetails {
     private Sauce sauce;
 
 
-
     public Sauce getSauce() {
         return sauce;
     }

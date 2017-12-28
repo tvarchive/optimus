@@ -17,6 +17,8 @@
 
 package com.testvagrant.monitor.performance;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
@@ -29,10 +31,34 @@ public class MongoURITest {
 
     @Test
     public void test() {
+
+
+
         MongoClientURI uri = new MongoClientURI(
                 "mongodb://krishnanandb:Krishna%400405@firstcluster-shard-00-00-unuus.mongodb.net:27017,firstcluster-shard-00-01-unuus.mongodb.net:27017,firstcluster-shard-00-02-unuus.mongodb.net:27017/<DATABASE>?ssl=true&replicaSet=FirstCluster-shard-0&authSource=admin"
         );
         MongoClient mongoClient = new MongoClient(uri);
         MongoDatabase database = mongoClient.getDatabase("test");
+    }
+
+    @Test
+    public void runConfigTest() {
+        String runConfig = getRunConfig();
+        System.out.println(runConfig);
+    }
+
+    private String getRunConfig() {
+        JsonObject testFeed = new Gson().fromJson("{\"executionDetails\": {\n" +
+                "    \"appium_js_path\": \"/usr/local/bin/appium\",\n" +
+                "    \"appium_node_path\": \"/usr/local/opt/node@6/bin/node\"\n" +
+                "  }}",JsonObject.class);
+        JsonObject executionDetails = testFeed.getAsJsonObject("executionDetails");
+        String runConfig;
+        try {
+            runConfig = executionDetails.get("runConfig").getAsString();
+        } catch (Exception e) {
+            runConfig = "default";
+        }
+        return runConfig;
     }
 }

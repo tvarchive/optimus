@@ -17,8 +17,6 @@
 
 package com.testvagrant.monitor.performance;
 
-import com.mongodb.MongoClient;
-import com.testvagrant.monitor.MongoBase;
 import com.testvagrant.monitor.MongoMain;
 import com.testvagrant.monitor.exceptions.MongoInstanceException;
 import org.junit.Test;
@@ -27,6 +25,6 @@ public class MongoBaseTest {
 
     @Test
     public void test() throws MongoInstanceException {
-        MongoMain.main(new String[]{});
+        new MongoMain("").createOptimusDb();
     }
 }

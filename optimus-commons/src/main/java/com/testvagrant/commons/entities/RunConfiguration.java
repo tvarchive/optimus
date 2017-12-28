@@ -3,7 +3,7 @@ package com.testvagrant.commons.entities;
 public class RunConfiguration {
     private String dbname = "optimus";
     private String dburi = "mongodb://localhost:27017";
-    private String dbservice  = "http://localhost:3000";
+    private String dbservice  = "http://localhost:8090/v1";
 
     public String getDbname() {
         return dbname;
