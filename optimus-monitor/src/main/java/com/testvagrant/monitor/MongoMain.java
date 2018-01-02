@@ -24,9 +24,9 @@ import com.mongodb.client.MongoDatabase;
 import com.testvagrant.commons.entities.RunConfiguration;
 import com.testvagrant.commons.parser.RunConfigParser;
 import com.testvagrant.commons.utils.JsonUtil;
-import com.testvagrant.monitor.clients.BuildsClient;
 import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.exceptions.MongoInstanceException;
+import com.testvagrant.monitor.services.BuildsServiceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class MongoMain {
         createCollection(optimus, "intellisense");
         createCollection(optimus, "testdata");
         System.out.println("Notifying build start");
-        new BuildsClient().createNewBuild();
+        new BuildsServiceImpl().notifyBuildStart();
     }
 
     public void closeMongo() {

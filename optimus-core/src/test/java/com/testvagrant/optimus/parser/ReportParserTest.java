@@ -18,7 +18,7 @@
 package com.testvagrant.optimus.parser;
 
 import com.testvagrant.commons.entities.reportParser.ExecutedScenario;
-import com.testvagrant.monitor.radiator.RecommendationWriter;
+import com.testvagrant.monitor.services.IntellisenseServiceImpl;
 import com.testvagrant.optimus.recommender.ExceptionCollator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class ReportParserTest {
         List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/jsonreports")).parse();
         ExceptionCollator exceptionCollator = new ExceptionCollator(executedScenarios);
         Map<String, List<ExecutedScenario>> collate = exceptionCollator.collate();
-        new RecommendationWriter().writeFailedScenariosByException(collate);
+        new IntellisenseServiceImpl().writeFailedScenariosByException(collate);
 
 
     }

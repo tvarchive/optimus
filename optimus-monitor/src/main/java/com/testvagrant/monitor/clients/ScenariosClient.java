@@ -34,13 +34,14 @@ public class ScenariosClient {
         return Integer.valueOf(response.asString());
     }
 
-    public Scenario findRelevantScenario(String buildId, String scenarioName, Integer location) {
+    public Scenario findRelevantScenario(String buildId, String scenarioName, Integer location,String udid) {
         Response get = given()
                 .header("Content-Type", "application/json")
                 .queryParam("buildId",buildId)
                 .queryParam("scenarioName",scenarioName)
                 .queryParam("location",location)
-                .get(SCENARIOS+"/search/findByBuildIdAndScenarioNameAndLocation");
+                .queryParam("deviceUdid",udid)
+                .get(SCENARIOS+"/search/findByBuildIdAndScenarioNameAndLocationAndDeviceUdid");
         return get.as(Scenario.class);
     }
 

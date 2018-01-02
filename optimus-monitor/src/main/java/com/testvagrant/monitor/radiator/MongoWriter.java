@@ -41,7 +41,6 @@ import com.testvagrant.monitor.requests.Scenario;
 import com.testvagrant.monitor.requests.Screenshot;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import java.text.DecimalFormat;
@@ -54,12 +53,9 @@ import static com.testvagrant.monitor.utils.DeviceToDeviceDetailsMapper.getDevic
 
 public class MongoWriter extends MongoIO {
 
-    private ObjectMapper objectMapper;
 
     public MongoWriter() {
         super();
-        objectMapper = new ObjectMapper();
-        objectMapper.enableDefaultTyping();
     }
 
     public void insertDeviceList(List<DeviceDetails> deviceDetailsList) {
@@ -68,7 +64,6 @@ public class MongoWriter extends MongoIO {
         List<Device> devicesFromDeviceDetails = getDevicesFromDeviceDetails(latestBuildID,deviceDetailsList);
         new DevicesClient().storeDevices(devicesFromDeviceDetails);
     }
-
 
 
     public void updateDeviceScreenshot(String udid, byte[] screenshot) {
@@ -104,7 +99,7 @@ public class MongoWriter extends MongoIO {
     }
 
     public void notifyScenarioCompletion(SmartBOT smartBOT) {
-        Scenario scenario = new ScenariosClient().findRelevantScenario(latestBuildID,smartBOT.getScenario().getName(), getLocation(smartBOT));
+        Scenario scenario = new ScenariosClient().findRelevantScenario(latestBuildID,smartBOT.getScenario().getName(), getLocation(smartBOT), smartBOT.getDeviceUdid());
         Date endTime = new Date();
         long timeTaken = (endTime.getTime() - scenario.getStartTime().getTime()) / 1000;
         scenario.setStatus(smartBOT.getScenario().getStatus().lowerCaseName());
@@ -142,9 +137,9 @@ public class MongoWriter extends MongoIO {
 
     }
 
-    protected String getLatestRecordFor(ExecutedScenario scenario) {
+    public String getLatestRecordFor(ExecutedScenario scenario) {
         Scenario executedScenario = getScenarioByNameAndLocation(scenario);
-        Scenario relevantScenario = new ScenariosClient().findRelevantScenario(latestBuildID, executedScenario.getScenarioName(), executedScenario.getLocation());
+        Scenario relevantScenario = new ScenariosClient().findRelevantScenario(latestBuildID, executedScenario.getScenarioName(), executedScenario.getLocation(),scenario.getDeviceName());
         return relevantScenario.getId();
     }
 
@@ -168,7 +163,7 @@ public class MongoWriter extends MongoIO {
 
 
     public void updateStatusToAvailableForDevice(String udid) throws DeviceReleaseException {
-        new DevicesClient().releaseDevice(latestBuildID,udid);
+//        new DevicesClient().releaseDevice(latestBuildID,udid);
     }
 
     public void updateExecutionDetailsFor(List<ExecutedScenario> scenarios) {
@@ -184,7 +179,7 @@ public class MongoWriter extends MongoIO {
         String scenarioId = executedScenario.getId();
         String location = scenarioId.substring(scenarioId.lastIndexOf("-")+1);
         String scenarioName = scenarioId.substring(0,scenarioId.lastIndexOf("-")).replaceAll("-"," ");
-        return new ScenariosClient().findRelevantScenario(latestBuildID,scenarioName,Integer.parseInt(location));
+        return new ScenariosClient().findRelevantScenario(latestBuildID,scenarioName,Integer.parseInt(location),executedScenario.getDeviceName());
     }
 
     public void notifyBuildStart() {
@@ -243,9 +238,9 @@ public class MongoWriter extends MongoIO {
     private Scenario getScenario(SmartBOT smartBOT, ScenariosClient scenariosClient) {
         Scenario scenario = null;
         if(isScenarioOutline(smartBOT)) {
-          scenario  = scenariosClient.findRelevantScenario(latestBuildID, smartBOT.getScenario().getName(), smartBOT.getScenario().getLines().get(1));
+          scenario  = scenariosClient.findRelevantScenario(latestBuildID, smartBOT.getScenario().getName(), smartBOT.getScenario().getLines().get(1),smartBOT.getDeviceUdid());
         } else {
-            scenario  = scenariosClient.findRelevantScenario(latestBuildID, smartBOT.getScenario().getName(), smartBOT.getScenario().getLines().get(0));
+            scenario  = scenariosClient.findRelevantScenario(latestBuildID, smartBOT.getScenario().getName(), smartBOT.getScenario().getLines().get(0),smartBOT.getDeviceUdid());
         }
         return scenario;
     }

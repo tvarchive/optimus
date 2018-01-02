@@ -19,8 +19,8 @@ package com.testvagrant.optimus;
 
 import com.testvagrant.commons.entities.reportParser.ExecutedScenario;
 import com.testvagrant.commons.utils.JsonUtil;
-import com.testvagrant.monitor.radiator.MongoWriter;
-import com.testvagrant.monitor.radiator.RecommendationWriter;
+import com.testvagrant.monitor.services.IntellisenseServiceImpl;
+import com.testvagrant.monitor.services.ScenariosServiceImpl;
 import com.testvagrant.optimus.parser.OptimusConfigParser;
 import com.testvagrant.optimus.parser.ReportParser;
 import com.testvagrant.optimus.recommender.ExceptionCollator;
@@ -36,10 +36,10 @@ public class ReportMain {
         System.out.println("Parsing report");
         List<ExecutedScenario> scenarios = new ReportParser(new File("build/reports/cucumber")).parse();
         if(monitoringIsOn()) {
-            new MongoWriter().updateExecutionDetailsFor(scenarios);
+            new ScenariosServiceImpl().updateExecutionDetailsFor(scenarios);
             ExceptionCollator collator = new ExceptionCollator(scenarios);
             Map<String, List<ExecutedScenario>> collate = collator.collate();
-            new RecommendationWriter().writeFailedScenariosByException(collate);
+            new IntellisenseServiceImpl().writeFailedScenariosByException(collate);
         }
     }
 

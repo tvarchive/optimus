@@ -28,7 +28,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.List;
 
-public class MongoReader extends MongoIO {
+public class MongoReader extends MongoIO   {
 
     MongoClient mongoClient;
     ObjectMapper objectMapper;

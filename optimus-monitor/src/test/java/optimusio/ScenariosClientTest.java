@@ -56,12 +56,18 @@ public class ScenariosClientTest {
     public void distinctScenarios() {
         List<Scenario> distinctScenarios = new ScenariosClient().getDistinctScenarios();
         int numberOfUniqueScenarios = distinctScenarios.size();
-        distinctScenarios.stream().forEach(scenario -> System.out.println(scenario.getStatus()));
-        int passedScenariosCount = distinctScenarios.stream().filter(scenario -> scenario.getStatus().equalsIgnoreCase(STATUS_PASSED)).collect(Collectors.toList()).size();
+        int passedScenariosCount = distinctScenarios.stream().filter(scenario -> {
+            boolean scenarioStatus = false;
+            try {
+                scenarioStatus = scenario.getStatus().equalsIgnoreCase(STATUS_PASSED);
+            } catch (Exception e) {
+            }
+            return scenarioStatus;
+        }).collect(Collectors.toList()).size();
         float pass_percentage = (passedScenariosCount*100.0f)/numberOfUniqueScenarios;
         DecimalFormat df = new DecimalFormat("#.0");
         String passRate = df.format(pass_percentage);
-        Build buildById = new BuildsClient().findBuildById("5a43ea2552f86862fa2306b0");
+        Build buildById = new BuildsClient().findBuildById("5a4b780b52f86874ff098573");
         buildById.setScenarioCount(numberOfUniqueScenarios);
         buildById.setScenarioSuccessRate(passRate);
         new BuildsClient().updateBuildRecord(buildById);

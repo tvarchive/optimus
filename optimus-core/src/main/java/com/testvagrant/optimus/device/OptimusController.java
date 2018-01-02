@@ -24,8 +24,7 @@ import com.testvagrant.commons.exceptions.DeviceMatchingException;
 import com.testvagrant.commons.helpers.ScenarioHelper;
 import com.testvagrant.monitor.exceptions.DeviceReleaseException;
 import com.testvagrant.monitor.performance.CrashMonitor;
-import com.testvagrant.monitor.radiator.MongoReader;
-import com.testvagrant.monitor.radiator.MongoWriter;
+import com.testvagrant.monitor.services.DevicesServiceImpl;
 import com.testvagrant.optimus.builder.SmartBOTBuilder;
 import com.testvagrant.optimus.parser.OptimusConfigParser;
 import com.testvagrant.optimus.utils.AppiumServerManager;
@@ -138,7 +137,7 @@ public class OptimusController {
                 logger.warn("Appium server didn't stop properly for ", e);
             } finally {
                 System.out.println("Trying to make Available - " + engagedBOT.getDeviceUdid());
-                new MongoWriter().updateStatusToAvailableForDevice(engagedBOT.getDeviceUdid());
+                new DevicesServiceImpl().updateStatusToAvailableForDevice(engagedBOT.getDeviceUdid());
             }
         }
     }
@@ -181,7 +180,7 @@ public class OptimusController {
                     .build();
 
             byte[] deviceScreenshot = driver.getScreenshotAs(OutputType.BYTES);
-            new MongoWriter().updateDeviceScreenshot(udid, deviceScreenshot);
+            new DevicesServiceImpl().updateDeviceScreenshot(udid, deviceScreenshot);
             smartBOTs.add(bot);
 
             for (SmartBOT smartBOT : smartBOTs) {
@@ -203,8 +202,7 @@ public class OptimusController {
 
     private String getRunsOnBasedOn(String udid) throws DeviceMatchingException {
         System.out.println("UDID: " + udid);
-        DeviceDetails deviceByUdid = null;
-        deviceByUdid = new MongoReader().getDeviceByUdid(udid);
+        DeviceDetails deviceByUdid = new DevicesServiceImpl().getDeviceByUdid(udid);
         System.out.println("DeviceName" + deviceByUdid.getDeviceName());
         return deviceByUdid.getRunsOn().name();
 

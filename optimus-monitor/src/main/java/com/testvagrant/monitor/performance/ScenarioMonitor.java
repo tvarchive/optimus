@@ -25,7 +25,7 @@ import com.testvagrant.monitor.entities.CpuData;
 import com.testvagrant.monitor.entities.MemoryData;
 import com.testvagrant.monitor.entities.ScenarioTimeline;
 import com.testvagrant.monitor.entities.ScreenshotStatistics;
-import com.testvagrant.monitor.radiator.MongoWriter;
+import com.testvagrant.monitor.services.ScenariosServiceImpl;
 import com.testvagrant.monitor.utils.Commons;
 
 import java.util.ArrayList;
@@ -77,22 +77,16 @@ public class ScenarioMonitor {
         generator.updateScreenshotStatistics(screenShots);
         cpuStat.forEach(cpuStatistics -> {
             Optional<Activity> activityOptional = activities.stream().filter(activity1 -> activity1.getInterval() == cpuStatistics.getInterval()).findFirst();
-            if (activityOptional.isPresent()) {
-                activity[0] = activityOptional.get();
-            }
+            activityOptional.ifPresent(activity1 -> activity[0] = activity1);
             Optional<MemoryStatistics> optionalMemoryStatistics = memoryStat.stream().filter(memoryStatistics1 -> memoryStatistics1.getInterval() == cpuStatistics.getInterval()).findFirst();
-            if (optionalMemoryStatistics.isPresent()) {
-                memoryStatistics[0] = optionalMemoryStatistics.get();
-            }
+            optionalMemoryStatistics.ifPresent(memoryStatistics1 -> memoryStatistics[0] = memoryStatistics1);
             Optional<ScreenshotStatistics> statisticsOptional = screenShots.stream().filter(screenshotStatistics -> screenshotStatistics.getInterval() == cpuStatistics.getInterval()).findFirst();
-            if (statisticsOptional.isPresent()) {
-                screenshotStats[0] = statisticsOptional.get();
-            }
+            statisticsOptional.ifPresent(screenshotStatistics -> screenshotStats[0] = screenshotStatistics);
             ScenarioTimeline scenarioTimeline = getScenarioTimeLine(cpuStatistics.getInterval(), activity[0], cpuStatistics, memoryStatistics[0], screenshotStats[0]);
             scenarioTimelines.add(scenarioTimeline);
         });
         generator.deleteImageFolder();
-        new MongoWriter().updateScenarioTimeLine(smartBOT, scenarioTimelines);
+        new ScenariosServiceImpl().updateScenarioTimeLine(smartBOT, scenarioTimelines);
         new Commons().deleteTempFolder(smartBOT);
     }
 

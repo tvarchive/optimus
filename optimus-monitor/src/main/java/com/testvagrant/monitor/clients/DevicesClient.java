@@ -74,18 +74,16 @@ public class DevicesClient {
         }
     }
 
-    public DeviceDetails releaseDevice(String buildId, String udid) throws DeviceReleaseException {
-        Device deviceToUpdate = getDeviceByUdid(buildId, udid);
-        deviceToUpdate.setStatus("Available");
+    public DeviceDetails releaseDevice(Device device) throws DeviceReleaseException {
         Response releaseDeviceResponse = given()
                 .header("Content-Type", "application/json")
-                .body(deviceToUpdate)
-                .put(DEVICES + String.format("/%s",deviceToUpdate.getId()));
+                .body(device)
+                .put(DEVICES + String.format("/%s",device.getId()));
         try {
             Device device1 = releaseDeviceResponse.as(Device.class);
             return DeviceToDeviceDetailsMapper.getDeviceDetails(device1);
         } catch (Exception e) {
-            throw new DeviceReleaseException(udid);
+            throw new DeviceReleaseException(device.getUdid());
         }
     }
 

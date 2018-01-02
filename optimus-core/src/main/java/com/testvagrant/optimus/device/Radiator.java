@@ -18,7 +18,7 @@
 package com.testvagrant.optimus.device;
 
 import com.testvagrant.commons.entities.SmartBOT;
-import com.testvagrant.monitor.radiator.MongoWriter;
+import com.testvagrant.monitor.services.ScenariosServiceImpl;
 
 import java.util.List;
 
@@ -32,14 +32,14 @@ public class Radiator {
 
     public void notifyScenarioStart() {
         for (SmartBOT smartBOT : smartBOTs) {
-            new MongoWriter().notifyBOTRegistration(smartBOT);
+            new ScenariosServiceImpl().notifyBOTRegistration(smartBOT);
         }
 
     }
 
     public void notifyScenarioCompletion() {
         for (SmartBOT smartBOT : smartBOTs) {
-            new MongoWriter().notifyScenarioCompletion(smartBOT);
+            new ScenariosServiceImpl().notifyScenarioCompletion(smartBOT);
         }
 
     }

@@ -10,6 +10,7 @@ import com.testvagrant.monitor.clients.BuildsClient;
 import com.testvagrant.monitor.clients.DevicesClient;
 import com.testvagrant.monitor.requests.Build;
 import com.testvagrant.monitor.requests.Device;
+import com.testvagrant.monitor.services.DevicesServiceImpl;
 import com.testvagrant.monitor.utils.DeviceToDeviceDetailsMapper;
 import io.restassured.response.Response;
 import org.junit.Assert;
@@ -66,7 +67,10 @@ public class DevicesClientTest {
     }
     @Test
     public void getAllDevices() {
-        List<DeviceDetails> deviceDetails = new DevicesClient().getAllDevices("5a435b9452f868b48ef48696");
+
+        List<DeviceDetails> allDevices = new DevicesServiceImpl().getAllDevices();
+        System.out.println(allDevices);
+        List<DeviceDetails> deviceDetails = new DevicesClient().getAllDevices("5a4b5af852f868369e3f6f91");
         deviceDetails.forEach(device -> {
             System.out.println(device.getPlatform());
         });

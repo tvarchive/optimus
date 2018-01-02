@@ -19,8 +19,7 @@ package com.testvagrant.optimus.device;
 
 import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.commons.exceptions.DeviceEngagedException;
-import com.testvagrant.monitor.radiator.MongoReader;
-import com.testvagrant.monitor.radiator.MongoWriter;
+import com.testvagrant.monitor.services.DevicesServiceImpl;
 import com.testvagrant.optimus.utils.Commons;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -30,7 +29,7 @@ import java.util.List;
 
 public class DeviceFinder {
     public DeviceDetails getAvailableDeviceAndUpdateToEngaged(JSONObject testFeed) throws DeviceEngagedException {
-        List<DeviceDetails> deviceDetailsList = new MongoReader().getAllDevices();
+        List<DeviceDetails> deviceDetailsList = new DevicesServiceImpl().getAllDevices();
 
         System.out.println("-------- All devices and there status --------");
 
@@ -51,9 +50,9 @@ public class DeviceFinder {
             if (new Commons().isUDIDAvailable(testFeed)) {
                 String udid = new Commons().getUDID(testFeed);
                 System.out.println("Finding device in DB with udid - " + udid);
-                deviceDetails = new MongoWriter().updateFirstAvailableDeviceToEngaged(udid);
+                deviceDetails = new DevicesServiceImpl().updateFirstAvailableDeviceToEngaged(udid);
             } else {
-                deviceDetails = new MongoWriter().updateFirstAvailableDeviceToEngaged(jsonObject);
+                deviceDetails = new DevicesServiceImpl().updateFirstAvailableDeviceToEngaged(jsonObject);
             }
         }
         return deviceDetails;

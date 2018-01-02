@@ -19,7 +19,7 @@ package com.testvagrant.optimus.helpers;
 
 import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.commons.exceptions.OptimusException;
-import com.testvagrant.monitor.radiator.MongoReader;
+import com.testvagrant.monitor.services.DevicesServiceImpl;
 import com.testvagrant.optimus.updater.DeviceMiner;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,7 +38,7 @@ public class DeviceHelper {
 
 
     public List<String> getConnectedDevicesMatchingRunCriteria() throws OptimusException {
-        List<String> connectedDevices = new DeviceMiner(new MongoReader().getAllDevices(), testFeedJson)
+        List<String> connectedDevices = new DeviceMiner(new DevicesServiceImpl().getAllDevices(), testFeedJson)
                 .getAllDevicesThatMatchTheCriteria().stream()
                 .map(DeviceDetails::getUdid)
                 .collect(Collectors.toList());
