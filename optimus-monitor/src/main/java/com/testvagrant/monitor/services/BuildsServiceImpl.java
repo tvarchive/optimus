@@ -21,7 +21,11 @@ public class BuildsServiceImpl extends OptimusServiceImpl implements BuildsServi
     @Override
     public void notifyBuildEnd() {
         Build buildToUpdate = new BuildsClient().findBuildById(getLatestBuild());
+        Integer buildScenarioCount = new ScenariosClient().getBuildScenarioCount(getLatestBuild());
+        Integer buildScenarioCountByStatus = new ScenariosClient().getBuildScenarioCountByStatus(getLatestBuild(),"passed");
         buildToUpdate.setBuildEndTime(new Date());
+        buildToUpdate.setBuildScenarios(buildScenarioCount);
+        buildToUpdate.setBuildSuccessRate(buildScenarioCountByStatus);
         new BuildsClient().updateBuildRecord(buildToUpdate);
     }
 
@@ -35,7 +39,7 @@ public class BuildsServiceImpl extends OptimusServiceImpl implements BuildsServi
         DecimalFormat df = new DecimalFormat("#.0");
         String passRate = df.format(pass_percentage);
         Build buildById = new BuildsClient().findBuildById(getLatestBuild());
-        buildById.setScenarioCount(numberOfUniqueScenarios);
+        buildById.setScenariosCount(numberOfUniqueScenarios);
         buildById.setScenarioSuccessRate(passRate);
         new BuildsClient().updateBuildRecord(buildById);
     }

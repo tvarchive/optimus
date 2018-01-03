@@ -12,7 +12,7 @@ public class BuildsRequestBuilder {
         Date date = new Date();
         builds.setBuildEndTime(date);
         builds.setBuildStartTime(date);
-        builds.setScenarioCount(0);
+        builds.setScenariosCount(0);
         builds.setScenarioSuccessRate("0.0");
     }
 
@@ -27,7 +27,7 @@ public class BuildsRequestBuilder {
     }
 
     public BuildsRequestBuilder withScenarioCount(int count) {
-        builds.setScenarioCount(count);
+        builds.setScenariosCount(count);
         return this;
     }
 

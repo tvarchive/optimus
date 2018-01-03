@@ -72,4 +72,22 @@ public class ScenariosClient {
     }
 
 
+    public Integer getBuildScenarioCount(String buildId) {
+        Response buildScenarioCount = given()
+                .header("Content-Type","application/json")
+                .queryParam("buildId",buildId)
+                .get(SCENARIOS+"/search/countByBuildId");
+        return Integer.valueOf(buildScenarioCount.asString());
+    }
+
+    public Integer getBuildScenarioCountByStatus(String buildId, String status) {
+        Response buildScenarioCountByStatus = given()
+                .header("Content-Type","application/json")
+                .queryParam("buildId",buildId)
+                .queryParam("status",status)
+                .get(SCENARIOS+"/search/countByBuildIdAndStatus");
+        return Integer.valueOf(buildScenarioCountByStatus.asString());
+    }
+
+
 }

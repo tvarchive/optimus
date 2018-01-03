@@ -68,7 +68,7 @@ public class ScenariosClientTest {
         DecimalFormat df = new DecimalFormat("#.0");
         String passRate = df.format(pass_percentage);
         Build buildById = new BuildsClient().findBuildById("5a4b780b52f86874ff098573");
-        buildById.setScenarioCount(numberOfUniqueScenarios);
+        buildById.setScenariosCount(numberOfUniqueScenarios);
         buildById.setScenarioSuccessRate(passRate);
         new BuildsClient().updateBuildRecord(buildById);
     }

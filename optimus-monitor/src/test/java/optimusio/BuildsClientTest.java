@@ -13,7 +13,7 @@ public class BuildsClientTest {
     public void createAndFindBuildDocument() {
         Build newBuild = new BuildsClient().createNewBuild();
         Assert.assertEquals(true,newBuild.getBuildStartTime().getTime()<new Date().getTime());
-        Assert.assertEquals(0,newBuild.getScenarioCount());
+        Assert.assertEquals(0,newBuild.getScenariosCount());
     }
 
 
@@ -28,10 +28,10 @@ public class BuildsClientTest {
     public void updateBuildDocument() {
         Build newBuild = new BuildsClient().createNewBuild();
         Build buildUpdate = new Build();
-        buildUpdate.setScenarioCount(20);
+        buildUpdate.setScenariosCount(20);
         buildUpdate.setBuildEndTime(new Date());
         Build updatedBuild = new BuildsClient().updateBuildRecord(buildUpdate);
-        Assert.assertEquals(buildUpdate.getScenarioCount(),updatedBuild.getScenarioCount());
+        Assert.assertEquals(buildUpdate.getScenariosCount(),updatedBuild.getScenariosCount());
         Assert.assertEquals(updatedBuild.getBuildStartTime(),updatedBuild.getBuildStartTime());
         Assert.assertEquals(updatedBuild.getBuildEndTime(),updatedBuild.getBuildEndTime());
         Assert.assertEquals(buildUpdate.getBuildEndTime(),updatedBuild.getBuildEndTime());

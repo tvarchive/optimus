@@ -212,7 +212,7 @@ public class MongoWriter extends MongoIO {
         DecimalFormat df = new DecimalFormat("#.0");
         String passRate = df.format(pass_percentage);
         Build buildById = new BuildsClient().findBuildById(latestBuildID);
-        buildById.setScenarioCount(numberOfUniqueScenarios);
+        buildById.setScenariosCount(numberOfUniqueScenarios);
         buildById.setScenarioSuccessRate(passRate);
         new BuildsClient().updateBuildRecord(buildById);
     }
