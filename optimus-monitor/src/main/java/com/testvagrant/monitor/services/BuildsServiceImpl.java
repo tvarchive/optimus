@@ -34,7 +34,15 @@ public class BuildsServiceImpl extends OptimusServiceImpl implements BuildsServi
         List<Scenario> distinctScenarios = new ScenariosClient().getDistinctScenarios();
         int numberOfUniqueScenarios = distinctScenarios.size();
         System.out.println("Unique Scenarios "+numberOfUniqueScenarios);
-        int passedScenariosCount = distinctScenarios.stream().filter(scenario -> scenario.getStatus().equalsIgnoreCase(STATUS_PASSED)).collect(Collectors.toList()).size();
+        int passedScenariosCount = distinctScenarios.stream().filter(scenario -> {
+            boolean status = false;
+            try {
+                status = scenario.getStatus().equalsIgnoreCase(STATUS_PASSED);
+            } catch(Exception e) {
+
+            }
+            return status;
+        }).collect(Collectors.toList()).size();
         float pass_percentage = (passedScenariosCount*100.0f)/numberOfUniqueScenarios;
         DecimalFormat df = new DecimalFormat("#.0");
         String passRate = df.format(pass_percentage);
