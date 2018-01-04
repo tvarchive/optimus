@@ -3,6 +3,7 @@ package com.testvagrant.monitor.clients;
 import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.requests.Scenario;
 import com.testvagrant.monitor.requests.Screenshot;
+import com.testvagrant.monitor.responses.ScenariosResponse;
 import io.restassured.response.Response;
 
 import java.util.Arrays;
@@ -89,5 +90,24 @@ public class ScenariosClient {
         return Integer.valueOf(buildScenarioCountByStatus.asString());
     }
 
+    public List<Scenario> getDistinctScenariosByUdid(String buildId) {
+        Response response = given()
+                .header("Content-Type", "application/json")
+                .queryParam("buildId", buildId)
+                .get(SCENARIOS + "/distinctUdid");
+        Scenario[] scenarios = response.as(Scenario[].class);
+        return Arrays.asList(scenarios);
+    }
+
+    public List<Scenario> getScenariosByActivity(String buildId, String udid, String activity) {
+        Response response = given()
+                .header("Content-Type", "application/json")
+                .queryParam("buildId", buildId)
+                .queryParam("deviceUdid", udid)
+                .queryParam("activity", activity)
+                .get(SCENARIOS + "/search/findByBuildIdAndDeviceUdidAndActivity");
+        ScenariosResponse scenarios = response.as(ScenariosResponse.class);
+        return scenarios.getContent();
+    }
 
 }

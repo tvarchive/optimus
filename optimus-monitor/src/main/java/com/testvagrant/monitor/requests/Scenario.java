@@ -23,6 +23,8 @@ public class Scenario {
     private String scenarioTimeline;
     private String steps;
     private byte[] failedOnScreen;
+    private String stacktrace;
+    private String activity;
 
 
     public String getId() {
@@ -143,5 +145,21 @@ public class Scenario {
 
     public void setFailedOnScreen(byte[] failedOnScreen) {
         this.failedOnScreen = failedOnScreen;
+    }
+
+    public String getStacktrace() {
+        return stacktrace;
+    }
+
+    public void setStacktrace(String stacktrace) {
+        this.stacktrace = stacktrace;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 }

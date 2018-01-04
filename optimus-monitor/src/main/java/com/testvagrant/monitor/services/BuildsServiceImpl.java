@@ -1,13 +1,14 @@
 package com.testvagrant.monitor.services;
 
+import com.google.gson.GsonBuilder;
 import com.testvagrant.monitor.clients.BuildsClient;
 import com.testvagrant.monitor.clients.ScenariosClient;
+import com.testvagrant.monitor.entities.CrashData;
 import com.testvagrant.monitor.requests.Build;
 import com.testvagrant.monitor.requests.Scenario;
 
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.testvagrant.monitor.constants.MongoDB.STATUS_PASSED;
@@ -50,5 +51,32 @@ public class BuildsServiceImpl extends OptimusServiceImpl implements BuildsServi
         buildById.setScenariosCount(numberOfUniqueScenarios);
         buildById.setScenarioSuccessRate(passRate);
         new BuildsClient().updateBuildRecord(buildById);
+    }
+
+    @Override
+    public void createCrashCollection() {
+        List<CrashData> crashDataList = new ArrayList<>();
+        List<Scenario> uniqueScenariosByDevice = new ScenariosClient().getDistinctScenariosByUdid(getLatestBuild());
+        uniqueScenariosByDevice.forEach(scenario -> {
+            if(scenario.getActivity() != null) {
+                Map<String, List<String>> stackTraceMap = new HashMap<>();
+                CrashData crashData = new CrashData();
+                crashData.setUdid(scenario.getDeviceUdid());
+                List<Scenario> scenariosByActivity = new ScenariosClient().getScenariosByActivity(getLatestBuild(), scenario.getDeviceUdid(), scenario.getActivity());
+                List<String> stackTraceList = new ArrayList<>();
+                scenariosByActivity.forEach(scenarioByActivity -> {
+                    stackTraceList.add(scenarioByActivity.getStacktrace());
+                });
+                stackTraceMap.put(scenario.getActivity(), stackTraceList);
+                crashData.setActivityStacktraceMap(stackTraceMap);
+                crashDataList.add(crashData);
+            }
+
+        });
+        if(crashDataList.size()>0) {
+            Build build = new BuildsClient().findBuildById(getLatestBuild());
+            build.setCrashlytics(new GsonBuilder().disableHtmlEscaping().create().toJson(crashDataList));
+            new BuildsClient().updateBuildRecord(build);
+        }
     }
 }

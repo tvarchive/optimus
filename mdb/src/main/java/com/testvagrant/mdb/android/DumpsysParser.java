@@ -92,6 +92,7 @@ public class DumpsysParser {
 
         Exceptions exception = new Exceptions();
         for (String line : errors) {
+
             if (line.contains("(") && line.contains(")"))
                 if (line.split("[\\(\\)]")[1].contains(pid)) {
                     adbLogs.add(line);
@@ -101,8 +102,9 @@ public class DumpsysParser {
         String stackTrace = String.join("\n", adbLogs);
         if (stackTrace.length() > 0) {
             exception.setStacktrace(stackTrace);
-            exception.setActivityName(stackTrace.split(smartBOT.getAppPackageName() + ".")[2]
-                    .split("\\$")[0]);
+            String activityLine = stackTrace.split("Caused by")[1].split("\t")[1].split(" ")[1];
+            String activity = activityLine.substring(0, activityLine.lastIndexOf("."));
+            exception.setActivityName(activity);
             return exception;
         } else
             return null;

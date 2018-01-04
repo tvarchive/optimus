@@ -4,6 +4,7 @@ import com.testvagrant.monitor.clients.BuildsClient;
 import com.testvagrant.monitor.clients.ScenariosClient;
 import com.testvagrant.monitor.requests.Build;
 import com.testvagrant.monitor.requests.Scenario;
+import com.testvagrant.monitor.services.BuildsServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -71,5 +72,11 @@ public class ScenariosClientTest {
         buildById.setScenariosCount(numberOfUniqueScenarios);
         buildById.setScenarioSuccessRate(passRate);
         new BuildsClient().updateBuildRecord(buildById);
+    }
+
+    @Test
+    public void crashTest() {
+        BuildsServiceImpl buildsService = new BuildsServiceImpl();
+        buildsService.createCrashCollection();
     }
 }

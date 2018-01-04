@@ -58,7 +58,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
     @Override
     public void updateScenarioTimeLine(SmartBOT smartBOT, List<ScenarioTimeline> scenarioTimelines) {
         ScenariosClient scenariosClient = new ScenariosClient();
-        Scenario scenario = getScenario(smartBOT, scenariosClient);
+        Scenario scenario = getScenario(smartBOT);
         scenarioTimelines.forEach(scenarioTimeline -> {
             if (scenarioTimeline.getScreenshotData() != null) {
                 String fileName = scenario.getId()+"_"+scenarioTimeline.getInterval();
@@ -74,14 +74,20 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
 
     }
 
+    @Override
+    public void updateCrashes(SmartBOT bot, String exceptions, String activity) {
+        Scenario scenario = getScenario(bot);
+        scenario.setStacktrace(exceptions);
+        scenario.setActivity(activity);
+        new ScenariosClient().updateScenario(getLatestBuild(),scenario);
+    }
+
     private void setScenarioLocation(SmartBOT smartBOT, Scenario scenario) {
         if(isScenarioOutline(smartBOT)) {
             scenario.setLocation(smartBOT.getScenario().getLines().get(1));
         } else {
             scenario.setLocation(smartBOT.getScenario().getLines().get(0));
         }
-
-
     }
 
     private boolean isScenarioOutline(SmartBOT smartBOT) {
@@ -103,8 +109,9 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         return new ScenariosClient().findRelevantScenario(getLatestBuild(),scenarioName,Integer.parseInt(location),executedScenario.getDeviceName());
     }
 
-    private Scenario getScenario(SmartBOT smartBOT, ScenariosClient scenariosClient) {
+    private Scenario getScenario(SmartBOT smartBOT) {
         Scenario scenario = null;
+        ScenariosClient scenariosClient = new ScenariosClient();
         if(isScenarioOutline(smartBOT)) {
             scenario  = scenariosClient.findRelevantScenario(getLatestBuild(), smartBOT.getScenario().getName(), smartBOT.getScenario().getLines().get(1),smartBOT.getDeviceUdid());
         } else {
@@ -112,4 +119,6 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         }
         return scenario;
     }
+
+
 }

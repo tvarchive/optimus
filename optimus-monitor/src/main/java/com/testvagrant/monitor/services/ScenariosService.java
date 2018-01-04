@@ -17,4 +17,6 @@ public interface ScenariosService {
     void updateExecutionDetailsFor(List<ExecutedScenario> scenarios);
 
     void updateScenarioTimeLine(SmartBOT smartBOT, List<ScenarioTimeline> scenarioTimelines);
+
+    void updateCrashes(SmartBOT bot, String exceptions, String activity);
 }

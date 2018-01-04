@@ -113,14 +113,10 @@ public class OptimusController {
 
     public void deRegisterSmartBOTs(List<SmartBOT> smartBOTs) throws DeviceReleaseException {
         stopScenarioListernerIfMonitoring(smartBOTs);
-
         for (SmartBOT engagedBOT : smartBOTs) {
-            //TODO: Crashes throw array out of bounds exception if the stacktrace does not include an exception by app package.
             try {
                 if (!engagedBOT.getRunsOn().equalsIgnoreCase("EMULATOR")) {
                     new CrashMonitor(engagedBOT).captureCrashes();
-
-
                 }
             }  catch (Exception e) {
                 //ignoring exception for arrayout of bounds thing

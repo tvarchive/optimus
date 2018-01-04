@@ -1,18 +1,28 @@
 package com.testvagrant.monitor.responses;
 
+import com.testvagrant.monitor.requests.Link;
 import com.testvagrant.monitor.requests.Scenario;
 
 import java.util.List;
 
 public class ScenariosResponse {
 
-    private List<Scenario> scenarios;
+    private List<Link> links;
+    private List<Scenario> content;
 
-    public List<Scenario> getScenarios() {
-        return scenarios;
+    public List<Link> getLinks() {
+        return links;
     }
 
-    public void setScenarios(List<Scenario> scenarios) {
-        this.scenarios = scenarios;
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+
+    public List<Scenario> getContent() {
+        return content;
+    }
+
+    public void setContent(List<Scenario> content) {
+        this.content = content;
     }
 }

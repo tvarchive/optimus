@@ -14,6 +14,7 @@ public class Build {
     private int buildSuccessRate;
     private int scenariosCount;
     private String scenarioSuccessRate;
+    private String crashlytics;
 
 
     public String getId() {
@@ -70,5 +71,13 @@ public class Build {
 
     public void setScenarioSuccessRate(String scenarioSuccessRate) {
         this.scenarioSuccessRate = scenarioSuccessRate;
+    }
+
+    public String getCrashlytics() {
+        return crashlytics;
+    }
+
+    public void setCrashlytics(String crashlytics) {
+        this.crashlytics = crashlytics;
     }
 }

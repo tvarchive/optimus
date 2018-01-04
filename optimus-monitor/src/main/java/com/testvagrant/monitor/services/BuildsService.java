@@ -7,4 +7,6 @@ public interface BuildsService {
     void notifyBuildEnd();
 
     void updateBuildWithUniqueScenarios();
+
+    void createCrashCollection();
 }
