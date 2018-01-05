@@ -21,7 +21,9 @@ import com.mongodb.MongoClient;
 import com.testvagrant.commons.entities.SmartBOT;
 import com.testvagrant.commons.entities.performance.Exceptions;
 import com.testvagrant.mdb.android.Android;
-import com.testvagrant.monitor.radiator.MongoWriter;
+import com.testvagrant.monitor.services.ScenariosServiceImpl;
+
+import java.util.Optional;
 
 /**
  * Created by abhishek on 12/05/17.
@@ -36,9 +38,11 @@ public class CrashMonitor {
     }
 
     public void captureCrashes() {
-        Exceptions exception = new Android().getException(smartBOT);
-        if (exception != null)
-            new MongoWriter().updateCrashes(smartBOT, exception.getStacktrace(), exception.getActivityName());
+        Optional<Exceptions> exception = new Android().getException(smartBOT);
+        exception.ifPresent(exceptions -> {
+            new ScenariosServiceImpl().updateCrashes(smartBOT, exceptions.getStacktrace(), exceptions.getActivityName());
+        });
+
     }
 
 }

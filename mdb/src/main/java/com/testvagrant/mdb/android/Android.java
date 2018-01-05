@@ -14,6 +14,7 @@ import com.testvagrant.mdb.helpers.AndroidHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -72,7 +73,7 @@ public class Android extends Mobile implements ADB {
         return new DumpsysParser(smartBOT).getCurrentActivity();
     }
 
-    public Exceptions getException(SmartBOT smartBOT){
+    public Optional<Exceptions> getException(SmartBOT smartBOT){
         return new DumpsysParser(smartBOT).getException();
     }
 }

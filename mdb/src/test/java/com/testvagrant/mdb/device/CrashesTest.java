@@ -5,18 +5,21 @@ import com.testvagrant.commons.entities.performance.Exceptions;
 import com.testvagrant.mdb.android.DumpsysParser;
 import org.junit.Test;
 
+import java.util.Optional;
+
 public class CrashesTest {
 
     @Test
     public void captureCrash() {
         SmartBOT smartBOT = new SmartBOT();
-        smartBOT.setDeviceUdid("ZY223D7XPB");
+        smartBOT.setDeviceUdid("4200935feed2a28f");
         smartBOT.setAppPackageName("com.gojek.app.staging");
         DumpsysParser dumpsysParser = new DumpsysParser(smartBOT);
-        Exceptions exception = dumpsysParser.getException();
-        System.out.println(exception.getActivityName());
-        System.out.println(exception.getStacktrace());
-//        System.out.println(exception.getStacktrace());
+        Optional<Exceptions> exception = dumpsysParser.getException();
+       exception.ifPresent(exceptions -> {
+           System.out.println(exceptions.getActivityName());
+           System.out.println(exceptions.getStacktrace());
+       });
 
     }
 

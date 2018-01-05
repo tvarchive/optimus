@@ -179,7 +179,8 @@ public class ReportParser {
 
     private String getId(JsonElement jsonElement) {
         JsonObject scenarioObject = jsonElement.getAsJsonObject();
-        String scenarioName = scenarioObject.get("name").getAsString().replaceAll(" ", "-");
+//        String scenarioName = scenarioObject.get("name").getAsString().replaceAll(" ", "-");
+        String scenarioName = scenarioObject.get("name").getAsString();
         String lineNumber = scenarioObject.get("line").getAsString();
         return scenarioName + "-" + lineNumber;
     }

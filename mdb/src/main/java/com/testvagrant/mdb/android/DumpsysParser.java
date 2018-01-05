@@ -80,33 +80,47 @@ public class DumpsysParser {
         return activity;
     }
 
-    public Exceptions getException() {
+    public Optional<Exceptions> getException() {
         String pid = "";
         String errorsCommand = String.format(GET_ERRORS, smartBOT.getDeviceUdid());
         List<String> errors = commandExecutor.exec(errorsCommand).asList();
         List<String> adbLogs = new ArrayList<>();
-        Optional<String> packageLine = errors.stream().filter(line -> line.contains("Process: " + smartBOT.getAppPackageName())).findFirst();
-        if (packageLine.isPresent()) {
-            pid = packageLine.get().split("[\\(\\)]")[1];
-        }
+        if (errors.stream().anyMatch(line -> line.contains("FATAL EXCEPTION:"))) {
+            Optional<String> packageLine = errors.stream().filter(line -> line.contains("Process: " + smartBOT.getAppPackageName())).findFirst();
+            if (packageLine.isPresent()) {
+                pid = packageLine.get().split("[\\(\\)]")[1];
+            }
 
+        } else {
+            return Optional.empty();
+        }
         Exceptions exception = new Exceptions();
         for (String line : errors) {
-
             if (line.contains("(") && line.contains(")"))
                 if (line.split("[\\(\\)]")[1].contains(pid)) {
                     adbLogs.add(line);
                 }
         }
 
+
         String stackTrace = String.join("\n", adbLogs);
         if (stackTrace.length() > 0) {
-            exception.setStacktrace(stackTrace);
-            String activityLine = stackTrace.split("Caused by")[1].split("\t")[1].split(" ")[1];
-            String activity = activityLine.substring(0, activityLine.lastIndexOf("."));
+            String[] split = stackTrace.split("FATAL EXCEPTION: ");
+            exception.setStacktrace("FATAL EXCEPTION: "+split[1]);
+            String activity = getActiviy(stackTrace);
             exception.setActivityName(activity);
-            return exception;
+            return Optional.of(exception);
         } else
-            return null;
+            return Optional.empty();
+    }
+
+    private String getActiviy(String stacktrace) {
+        try {
+            String caused_by = stacktrace.split("Caused by")[1];
+            String activityLine = caused_by.split("\t")[1].split(" ")[1];
+            return activityLine.substring(0, activityLine.lastIndexOf("."));
+        } catch (Exception e) {
+            return getCurrentActivity().getFocussedActivity();
+        }
     }
 }
