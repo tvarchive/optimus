@@ -19,7 +19,6 @@ package com.testvagrant.monitor;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.testvagrant.commons.entities.RunConfiguration;
 import com.testvagrant.commons.parser.RunConfigParser;
@@ -64,27 +63,13 @@ public class MongoMain {
             throw new MongoInstanceException();
         }
         RunConfiguration runConfiguration = RunConfigParser.getRunConfiguration(runConfig);
-        MongoClient mongoClient = MongoBase.newInstance(runConfiguration);
-        MongoDatabase optimus = mongoClient.getDatabase(runConfiguration.getDbname());
         MongoService.setMongoService(runConfiguration.getDbservice());
-        createCollection(optimus, "scenarios");
-        createCollection(optimus, "builds");
-        createCollection(optimus, "devices");
-        createCollection(optimus, "intellisense");
-        createCollection(optimus, "testdata");
         System.out.println("Notifying build start");
         new BuildsServiceImpl().notifyBuildStart();
     }
 
     public void closeMongo() {
         MongoBase.close();
-    }
-
-    private void createCollection(MongoDatabase dbname, String collectionName) {
-        if (!collectionExists(dbname, collectionName)) {
-            System.out.println("Created collection " + collectionName);
-            dbname.createCollection(collectionName);
-        }
     }
 
     private boolean collectionExists(MongoDatabase dbName, String collectionName) {
