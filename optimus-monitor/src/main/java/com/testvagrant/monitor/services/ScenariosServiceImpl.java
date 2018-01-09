@@ -102,7 +102,6 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
     private Scenario getScenarioByNameAndLocation(ExecutedScenario executedScenario) {
         String scenarioId = executedScenario.getId();
         String location = scenarioId.substring(scenarioId.lastIndexOf("-")+1);
-//        String scenarioName = scenarioId.substring(0,scenarioId.lastIndexOf("-")).replaceAll("-"," ");
         String scenarioName = scenarioId.substring(0,scenarioId.lastIndexOf("-"));
         System.out.println("Scenario Name is "+scenarioName);
         System.out.println("Scenario Location is "+location);
