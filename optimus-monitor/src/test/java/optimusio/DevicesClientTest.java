@@ -76,5 +76,10 @@ public class DevicesClientTest {
         });
         System.out.println(deviceDetails);
     }
+
+    @Test
+    public void dateTest() {
+
+    }
 }
 

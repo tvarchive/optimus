@@ -1,7 +1,6 @@
 package com.testvagrant.monitor.utils;
 
 import com.testvagrant.commons.entities.DeviceDetails;
-import com.testvagrant.commons.entities.device.DeviceType;
 import com.testvagrant.commons.entities.device.Platform;
 import com.testvagrant.commons.entities.device.Status;
 import com.testvagrant.monitor.requests.Device;
@@ -33,12 +32,15 @@ public class DeviceToDeviceDetailsMapper {
 
     public static DeviceDetails getDeviceDetails(Device device) {
         DeviceDetails deviceDetails = new DeviceDetails();
-        deviceDetails.setRunsOn(DeviceType.valueOf(device.getRunsOn()));
         deviceDetails.setPlatformVersion(device.getPlatformVersion());
         deviceDetails.setDeviceName(device.getDeviceName());
         deviceDetails.setUdid(device.getUdid());
         deviceDetails.setStatus(Status.valueOf(device.getStatus()));
-        deviceDetails.setPlatform(Platform.valueOf(device.getPlatform().toUpperCase()));
+        try {
+            deviceDetails.setPlatform(Platform.valueOf(device.getPlatform().toUpperCase()));
+        } catch (Exception e) {
+            deviceDetails.setPlatform(Platform.valueOf(device.getPlatform()));
+        }
         return deviceDetails;
     }
 }

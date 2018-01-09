@@ -19,3 +19,10 @@
 <START:name> org.openqa.selenium.TimeoutException <END> : Timed out after 30 seconds waiting for element to no longer be visible : By.id : input_field
 <START:name> org.openqa.selenium.TimeoutException <END> : Timed out after 30 seconds waiting for element to no longer be visible : By.id : input_field
 <START:name> org.openqa.selenium.TimeoutException <END> : Timed out after 30 seconds waiting for element to no longer be visible : By.id : input_field
+<START:name> org.openqa.selenium.TimeoutException <END> : Expected condition failed: waiting for element to be clickable: Proxy element for: DefaultElementLocator 'By.id: tv_address_title' (tried for 30 second(s) with 500 MILLISECONDS interval)
+<START:name> org.openqa.selenium.TimeoutException <END> : Expected condition failed: waiting for element to be clickable: Proxy element for: DefaultElementLocator 'By.id: tv_address_title' (tried for 30 second(s) with 500 MILLISECONDS interval)
+<START:name> org.openqa.selenium.TimeoutException <END> : Expected condition failed: waiting for element to be clickable: Proxy element for: DefaultElementLocator 'By.id: tv_address_title' (tried for 30 second(s) with 500 MILLISECONDS interval)
+<START:name> org.openqa.selenium.TimeoutException <END> : Expected condition failed: waiting for element to be clickable: Proxy element for: DefaultElementLocator 'By.id: tv_address_title' (tried for 30 second(s) with 500 MILLISECONDS interval)
+<START:name> org.openqa.selenium.TimeoutException <END> : Expected condition failed: waiting for element to be clickable: Proxy element for: DefaultElementLocator 'By.id: tv_address_title' (tried for 30 second(s) with 500 MILLISECONDS interval)
+<START:name> org.openqa.selenium.TimeoutException <END> : Expected condition failed: waiting for element to be clickable: Proxy element for: DefaultElementLocator 'By.id: tv_address_title' (tried for 30 second(s) with 500 MILLISECONDS interval)
+<START:name> org.openqa.selenium.TimeoutException <END> : Expected condition failed: waiting for element to be clickable: Proxy element for: DefaultElementLocator 'By.id: tv_address_title' (tried for 30 second(s) with 500 MILLISECONDS interval)

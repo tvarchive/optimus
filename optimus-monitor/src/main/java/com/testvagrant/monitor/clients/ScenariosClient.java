@@ -16,6 +16,7 @@ public class ScenariosClient {
     private final String SCENARIOS = MongoService.getMongoService()+"/scenarios";
     public Scenario createNewScenario(Scenario scenario, List<Integer> lines) {
         if(lines.size()>1) {
+            System.out.println("Scenario Lines "+lines);
             Integer scenariosCount = getNumberOfExistingScenariosByName(scenario.getBuildId(), scenario.getScenarioName());
             scenario.setDataRowNumber(++scenariosCount);
         }

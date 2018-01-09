@@ -61,7 +61,7 @@ public class ExceptionClassifier {
         ExceptionEntityBuilder exceptionEntityBuilder = new ExceptionEntityBuilder();
         Arrays.stream(identifiedTokens).forEach(token -> {
             switch (token.getType()) {
-                case "exception":
+                case "name":
                     exceptionEntityBuilder.withException(exceptionTokens[token.getStart()]);
                 break;
                 case "waitFor":

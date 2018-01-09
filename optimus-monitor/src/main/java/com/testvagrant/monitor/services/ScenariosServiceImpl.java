@@ -21,7 +21,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         scenario.setDeviceUdid(smartBOT.getDeviceUdid());
         scenario.setTags(smartBOT.getScenario().getSourceTagNames());
         scenario.setBuildId(getLatestBuild());
-        setScenarioLocation(smartBOT, scenario);
+        scenario.setLocation(getLocation(smartBOT));
         new ScenariosClient().createNewScenario(scenario, smartBOT.getScenario().getLines());
     }
 
@@ -34,7 +34,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         scenario.setCompleted(true);
         scenario.setEndTime(new Date());
         scenario.setTimeTaken(Math.toIntExact(timeTaken));
-        setScenarioLocation(smartBOT,scenario);
+        scenario.setLocation(getLocation(smartBOT));
         new ScenariosClient().updateScenario(getLatestBuild(),scenario);
     }
 
@@ -91,15 +91,12 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
     }
 
     private boolean isScenarioOutline(SmartBOT smartBOT) {
+        System.out.println(smartBOT.getScenario().getLines());
         return smartBOT.getScenario().getLines().size()>1;
     }
 
     private Integer getLocation(SmartBOT smartBOT) {
-        if(isScenarioOutline(smartBOT)) {
-            return smartBOT.getScenario().getLines().get(1);
-        } else {
-            return smartBOT.getScenario().getLines().get(0);
-        }
+        return smartBOT.getScenario().getLines().get(0);
     }
 
     private Scenario getScenarioByNameAndLocation(ExecutedScenario executedScenario) {
@@ -110,17 +107,14 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         System.out.println("Scenario Name is "+scenarioName);
         System.out.println("Scenario Location is "+location);
         System.out.println("Device Id is "+executedScenario.getDeviceName());
+        System.out.println("Latest buildId "+getLatestBuild());
         return new ScenariosClient().findRelevantScenario(getLatestBuild(),scenarioName,Integer.parseInt(location),executedScenario.getDeviceName());
     }
 
     private Scenario getScenario(SmartBOT smartBOT) {
         Scenario scenario = null;
         ScenariosClient scenariosClient = new ScenariosClient();
-        if(isScenarioOutline(smartBOT)) {
-            scenario  = scenariosClient.findRelevantScenario(getLatestBuild(), smartBOT.getScenario().getName(), smartBOT.getScenario().getLines().get(1),smartBOT.getDeviceUdid());
-        } else {
-            scenario  = scenariosClient.findRelevantScenario(getLatestBuild(), smartBOT.getScenario().getName(), smartBOT.getScenario().getLines().get(0),smartBOT.getDeviceUdid());
-        }
+        scenario  = scenariosClient.findRelevantScenario(getLatestBuild(), smartBOT.getScenario().getName(), getLocation(smartBOT),smartBOT.getDeviceUdid());
         return scenario;
     }
 
