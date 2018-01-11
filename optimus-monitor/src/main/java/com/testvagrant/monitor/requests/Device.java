@@ -85,4 +85,16 @@ public class Device {
     public void setRunsOn(String runsOn) {
         this.runsOn = runsOn;
     }
+
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "platform:\"" + platform + '\"' +
+                ", deviceName:\"" + deviceName + '\"' +
+                ", runsOn:\"" + runsOn + '\"' +
+                ", platformVersion:\"" + platformVersion + '\"' +
+                ", udid:\"" + udid + '\"' +
+                '}';
+    }
 }

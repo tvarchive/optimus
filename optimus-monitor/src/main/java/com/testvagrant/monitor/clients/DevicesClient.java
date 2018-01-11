@@ -46,8 +46,7 @@ public class DevicesClient {
                 .header("Content-Type", "application/json")
                 .queryParam("buildId", buildId)
                 .body(device)
-                .get(DEVICES + "/findMatchingDevice");
-        System.out.println("Device response "+deviceResponse.asString());
+                .post(DEVICES + "/findMatchingDevice");
         return deviceResponse.as(Device.class);
     }
 

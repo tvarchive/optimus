@@ -18,8 +18,8 @@ package com.testvagrant.commons.entities.device;
 
 public enum Platform {
 
-    ANDROID("android"),
-    IOS("ios");
+    ANDROID("ANDROID"),
+    IOS("IOS");
 
     private String name;
 

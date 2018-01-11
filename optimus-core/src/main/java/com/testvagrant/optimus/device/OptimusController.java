@@ -45,10 +45,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OptimusController {
 
@@ -156,10 +153,21 @@ public class OptimusController {
             String udid = (String) entry.getValue().getCapability("udid");
 
             String uniqueScenarioName = new ScenarioHelper(scenario).getUniqueScenarioName();
-            AppiumDriverLocalService appiumService = new AppiumServerManager(optimusConfigParser)
-                    .startAppiumService(uniqueScenarioName, udid);
-
-            AppiumDriver driver = addDriver(appiumService.getUrl(), entry.getValue());
+            AppiumDriverLocalService appiumService = null;
+            AppiumDriver driver = null;
+            AppiumServerManager appiumServerManager = new AppiumServerManager(optimusConfigParser);
+            if(platformIOS(entry.getValue())) {
+                appiumService = appiumServerManager
+                        .startAppiumService(uniqueScenarioName,udid);
+//                entry.getValue().setCapability("wdaLocalPort",appiumServerManager.aRandomOpenPortOnAllLocalInterfaces());
+                entry.getValue().setCapability("wdaStartupRetries",4);
+//                entry.getValue().setCapability("fullReset",true);
+                driver = addDriver(appiumService.getUrl(), entry.getValue());
+            } else {
+                appiumService = new AppiumServerManager(optimusConfigParser)
+                        .startAppiumService(uniqueScenarioName, udid);
+                driver = addDriver(appiumService.getUrl(), entry.getValue());
+            }
             logger.info(uniqueScenarioName + "--" + "driver instance created for " + udid);
 
             String appPackage = (String) entry.getValue().getCapability("appPackage");

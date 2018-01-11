@@ -1,16 +1,9 @@
 package com.testvagrant.optimus.utils;
 
-import com.testvagrant.commons.entities.device.OSVersion;
-import com.testvagrant.commons.entities.device.Platform;
-import com.testvagrant.mdb.utils.OSVersionMatcher;
 import org.json.JSONObject;
 
 public class Commons {
 
-
-    public OSVersion getOSVersion(String osVersion, Platform platform) {
-        return new OSVersionMatcher().getOSVersion(platform, osVersion);
-    }
 
     public boolean isUDIDAvailable(JSONObject testFeed) {
         try {

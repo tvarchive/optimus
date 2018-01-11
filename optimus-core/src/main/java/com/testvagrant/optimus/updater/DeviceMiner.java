@@ -20,14 +20,12 @@ package com.testvagrant.optimus.updater;
 
 import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.commons.entities.device.DeviceType;
-import com.testvagrant.commons.entities.device.OSVersion;
 import com.testvagrant.commons.entities.device.Platform;
 import com.testvagrant.commons.entities.device.Status;
 import com.testvagrant.commons.exceptions.DeviceMatchingException;
 import com.testvagrant.commons.exceptions.NoSuchDeviceTypeException;
 import com.testvagrant.commons.exceptions.NoSuchPlatformException;
 import com.testvagrant.commons.exceptions.OptimusException;
-import com.testvagrant.optimus.utils.Commons;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -169,10 +167,7 @@ public class DeviceMiner {
 
     private ArrayList<DeviceDetails> getDevicesForPlatformVersion(String platformVersion) {
         return deviceDetails.stream()
-                .filter(d -> {
-                    OSVersion version = new Commons().getOSVersion(platformVersion, d.getPlatform());
-                    return d.getPlatformVersion().equals(version);
-                })
+                .filter(d -> d.getPlatformVersion().equals(platformVersion))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 

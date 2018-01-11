@@ -17,6 +17,7 @@
 
 package com.testvagrant.optimus.utils;
 
+import com.testvagrant.optimus.device.WDAServerFlag;
 import com.testvagrant.optimus.entity.ExecutionDetails;
 import com.testvagrant.optimus.parser.OptimusConfigParser;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
@@ -26,6 +27,7 @@ import io.appium.java_client.service.local.flags.AndroidServerFlag;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static com.jayway.awaitility.Awaitility.await;
@@ -36,36 +38,44 @@ public class AppiumServerManager {
 
     private ExecutionDetails executionDetails;
     private boolean isAndroid;
+    private Optional<Integer> port;
 
     public AppiumServerManager(OptimusConfigParser configParser) {
         this.executionDetails = configParser.getExecutionDetails();
         this.isAndroid = configParser.isForAndroid();
+        port = Optional.empty();
     }
 
 
     public AppiumDriverLocalService startAppiumService(String scenarioName, String udid) {
         AppiumDriverLocalService appiumService;
+        int wdaPort = aRandomOpenPortOnAllLocalInterfaces();
         AppiumServiceBuilder appiumServiceBuilder = new AppiumServiceBuilder()
                 .usingDriverExecutable(new File(executionDetails.getAppium_node_path()))
                 .withAppiumJS(new File(executionDetails.getAppium_js_path()))
                 .withIPAddress("127.0.0.1")
-                .usingAnyFreePort()
                 .withArgument(SESSION_OVERRIDE)
+                .usingAnyFreePort()
                 .withLogFile(new File(String.format("build/%s.log", scenarioName + "_" + udid)));
         if(isAndroid) {
             appiumServiceBuilder.withArgument(AndroidServerFlag.BOOTSTRAP_PORT_NUMBER, String.valueOf(aRandomOpenPortOnAllLocalInterfaces()));
+        } else {
+            appiumServiceBuilder.withArgument(WDAServerFlag.WDA_PORT,String.valueOf(wdaPort));
         }
         appiumService = AppiumDriverLocalService.buildService(appiumServiceBuilder);
         appiumService.start();
-
         await().atMost(5, TimeUnit.SECONDS).until(() -> appiumService.isRunning());
-
         return appiumService;
 
     }
 
+    public AppiumServerManager withPort(int port) {
+        this.port = Optional.of(port);
+        return this;
+    }
 
-    private Integer aRandomOpenPortOnAllLocalInterfaces() {
+
+    public Integer aRandomOpenPortOnAllLocalInterfaces() {
         try (
                 ServerSocket socket = new ServerSocket(0);
         ) {
