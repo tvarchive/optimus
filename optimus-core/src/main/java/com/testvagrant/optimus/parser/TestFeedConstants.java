@@ -29,6 +29,7 @@ public interface TestFeedConstants {
     String SAUCE_ACCESS_KEY = "sauceAccessKey";
     String MONITORING = "monitoring";
     String BELONGS_TO = "belongsTo";
+    String RUNS_ON = "runsOn";
     String OPTIMUS_DESIRED_CAPABILITIES = "optimusDesiredCapabilities";
     String APPIUM_SERVER_CAPABILITIES = "appiumServerCapabilities";
     String PLATFORM_NAME = "platformName";

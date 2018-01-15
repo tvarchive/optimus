@@ -61,10 +61,16 @@ public class OptimusConfigParser {
             JSONObject testFeedJSON = (JSONObject) testFeedArray.get(testFeedIterator);
             System.out.println("updated testFeed -- " + testFeedJSON.toString());
             DeviceDetails deviceDetails = new DeviceFinder().getAvailableDeviceAndUpdateToEngaged(testFeedJSON);
+            updateTestFeed(testFeedJSON,getAppBelongingTo(testFeedJSON.getString(BELONGS_TO)));
             DesiredCapabilities desiredCapabilities = new CapabilitiesBuilder(testFeedJSON, deviceDetails).buildCapabilities();
             ownerToCapabilitiesMap.put((String) testFeedJSON.get(BELONGS_TO), desiredCapabilities);
         }
         return ownerToCapabilitiesMap;
+    }
+
+    private void updateTestFeed(JSONObject testFeed,String appName) {
+       testFeed.getJSONObject("optimusDesiredCapabilities").getJSONObject("appiumServerCapabilities")
+               .put("app",appName);
     }
 
     public boolean isForAndroid() {
@@ -102,13 +108,39 @@ public class OptimusConfigParser {
         JSONArray testFeedArray = (JSONArray) jsonObject.get(TEST_FEED);
         for (int testFeedIterator = 0; testFeedIterator < testFeedArray.length(); testFeedIterator++) {
             JSONObject testFeedJSON = (JSONObject) testFeedArray.get(testFeedIterator);
-            if (testFeedJSON.getString(BELONGS_TO).equalsIgnoreCase(appConsumer))
-                return testFeedJSON.getJSONObject(OPTIMUS_DESIRED_CAPABILITIES).getJSONObject(APPIUM_SERVER_CAPABILITIES).getString(APP);
+            if (testFeedJSON.getString(BELONGS_TO).equalsIgnoreCase(appConsumer)) {
+                String appName = testFeedJSON.getJSONObject(OPTIMUS_DESIRED_CAPABILITIES).getJSONObject(APPIUM_SERVER_CAPABILITIES).getString(APP);
+                if(appName.contains(".apk")||appName.contains(".ipa")||appName.contains(".app")) {
+                    return appName;
+                }else {
+                    return appName+getAppExtension(testFeedJSON);
+                }
+            }
 
         }
         throw new RuntimeException("No app found for -- " + appConsumer);
     }
 
+    private String getAppExtension(JSONObject testFeed) {
+        String platform = testFeed.getJSONObject(OPTIMUS_DESIRED_CAPABILITIES).getJSONObject(APPIUM_SERVER_CAPABILITIES).getString(PLATFORM_NAME);
+        switch (platform.toLowerCase()) {
+            case "android":
+                return ".apk";
+            case "ios":
+                return getIOSExtension(testFeed.getString(RUNS_ON));
+        }
+        return "";
+    }
+
+    private String getIOSExtension(String runsOn) {
+        switch (runsOn.toLowerCase()) {
+            case "simulator":
+                return ".app";
+            case "device":
+                return ".ipa";
+        }
+        return "";
+    }
 
     private <T> T getObjectFromJson(String appJson, Class<T> classOfT) {
         return new Gson().fromJson(appJson, classOfT);

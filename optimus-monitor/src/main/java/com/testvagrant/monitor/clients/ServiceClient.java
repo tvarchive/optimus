@@ -54,6 +54,7 @@ public class ServiceClient {
     }
 
     public void stopService() {
-        serviceProcess.destroy();
+        if(serviceProcess!=null)
+            serviceProcess.destroy();
     }
 }

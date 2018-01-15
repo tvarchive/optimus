@@ -136,7 +136,7 @@ public class OptimusController {
     }
 
     private void stopScenarioListernerIfMonitoring(List<SmartBOT> smartBOTs) {
-        if (optimusConfigParser.isMonitoring()) {
+        if (optimusConfigParser.isMonitoring() && optimusConfigParser.isForAndroid()) {
             new Radiator(smartBOTs).notifyScenarioCompletion();
             listener.stop();
         }
@@ -159,9 +159,6 @@ public class OptimusController {
             if(platformIOS(entry.getValue())) {
                 appiumService = appiumServerManager
                         .startAppiumService(uniqueScenarioName,udid);
-//                entry.getValue().setCapability("wdaLocalPort",appiumServerManager.aRandomOpenPortOnAllLocalInterfaces());
-                entry.getValue().setCapability("wdaStartupRetries",4);
-//                entry.getValue().setCapability("fullReset",true);
                 driver = addDriver(appiumService.getUrl(), entry.getValue());
             } else {
                 appiumService = new AppiumServerManager(optimusConfigParser)
@@ -195,7 +192,7 @@ public class OptimusController {
             logger.info(scenario + "---" + "BOT registered successfully for -- " + udid);
         }
 
-        if (optimusConfigParser.isMonitoring()) {
+        if (optimusConfigParser.isMonitoring() && optimusConfigParser.isForAndroid()) {
             new Radiator(smartBOTs).notifyScenarioStart();
             listener.setSmartBOTs(smartBOTs);
             listener.start();
