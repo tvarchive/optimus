@@ -67,6 +67,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
                 screenshot.setFileName(fileName);
                 screenshot.setData(scenarioTimeline.getScreenshotData());
                 scenariosClient.loadScreenshot(screenshot);
+                scenarioTimeline.setScreenshotData(null);
             }
         });
         scenario.setScenarioTimeline(new GsonBuilder().disableHtmlEscaping().create().toJson(scenarioTimelines));

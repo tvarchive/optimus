@@ -1,5 +1,21 @@
 group 'com.testvagrant.bfo'
-version '1.0-SNAPSHOT'
+version '3.0-beta'
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+
+
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.2"
+    }
+}
 
 allprojects {
     apply plugin: 'java'
@@ -44,13 +60,14 @@ allprojects {
         compile group: 'org.codehaus.jackson', name: 'jackson-jaxrs', version: '1.8.5'
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.0.pr4'
         compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.0.pr4'
-        compile group: 'com.jayway.awaitility', name: 'awaitility', version: '1.7.0'
 
 
         testCompile group: 'junit', name: 'junit', version: '4.11'
         testCompile "org.mockito:mockito-core:2.8.47"
         testCompile group: 'org.testng', name: 'testng', version: '6.11'
     }
+
+
 
 }
 
@@ -62,6 +79,29 @@ task mmJar(type: Jar, dependsOn: subprojects.jar) {
         from subproject.configurations.archives.artifacts.files.collect {
             zipTree(it)
         }
+    }
+}
+
+shadowJar {
+    baseName = 'optimus-3.0-beta'
+    classifier = null
+    version = null
+}
+
+dependencies {
+    compile subprojects
+}
+
+jar {
+    def manifestClasspath = configurations.runtime.collect { it.getName() }.join(' ')
+    manifest {
+        attributes  'Implementation-Title': "Test thing",
+                'Implementation-Version': '0.0.1',
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                'Built-Gradle': gradle.gradleVersion,
+                'Class-Path': manifestClasspath
     }
 }
 
