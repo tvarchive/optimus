@@ -22,6 +22,7 @@ allprojects {
     apply plugin: 'groovy'
     apply plugin: 'maven-publish'
     apply plugin: 'maven'
+    apply plugin: 'signing'
 
     sourceCompatibility = 1.8
 
@@ -74,7 +75,35 @@ allprojects {
 subprojects.each { subproject ->
     evaluationDependsOn(subproject.path)
 }
-task mmJar(type: Jar, dependsOn: subprojects.jar) {
+
+subprojects {
+    tasks.withType(Jar).all { jarTask ->
+        manifest {
+            attributes("Artifact": baseName, "Group": rootProject.group, "Build-Version": version)
+        }
+    }
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allSource
+        classifier = 'sources'
+    }
+
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    signing {
+        sign configurations.archives
+    }
+}
+
+task allJar(type: Jar, dependsOn: subprojects.jar) {
+    baseName = 'myproject-all'
     subprojects.each { subproject ->
         from subproject.configurations.archives.artifacts.files.collect {
             zipTree(it)
@@ -105,5 +134,67 @@ jar {
     }
 }
 
-install.dependsOn mmJar
+//artifacts {
+//    archives allJar
+//}
+
+//task mmJar(type: Jar, dependsOn: subprojects.jar) {
+//    subprojects.each { subproject ->
+//        from subproject.configurations.archives.artifacts.files.collect {
+//            zipTree(it)
+//        }
+//    }
+//}
+//
+//install.dependsOn mmJar
+
+
+group = "com.testvagrant"
+archivesBaseName = "optimus"
+version = "2.2.9-beta"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Optimus'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'The optimus core project that manages smart bots and their functioning for test scenarios'
+                url 'https://bitbucket.org/KrishnanandB/optimus'
+
+                scm {
+                    connection 'scm:https://github.com/testvagrant/optimus.git'
+                    url 'https://sukesh_testvagrant@bitbucket.org/KrishnanandB/optimus.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'sukesh'
+                        name 'Sukesh Kumar'
+                        email 'sukesh@testvagrant.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 
