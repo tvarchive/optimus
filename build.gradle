@@ -1,7 +1,6 @@
-group 'com.testvagrant.bfo'
-version '3.0-beta'
+group 'com.testvagrant'
+version '2.3.4-beta'
 
-apply plugin: "com.github.johnrengelman.shadow"
 
 
 
@@ -11,9 +10,6 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-    }
-    dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.2"
     }
 }
 
@@ -69,7 +65,6 @@ allprojects {
     }
 
 
-
 }
 
 subprojects.each { subproject ->
@@ -82,28 +77,21 @@ subprojects {
             attributes("Artifact": baseName, "Group": rootProject.group, "Build-Version": version)
         }
     }
-    task sourcesJar(type: Jar) {
-        from sourceSets.main.allSource
-        classifier = 'sources'
-    }
 
-    task javadocJar(type: Jar) {
-        classifier = 'javadoc'
-        from javadoc
-    }
-
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-    }
-
-    signing {
-        sign configurations.archives
-    }
 }
 
-task allJar(type: Jar, dependsOn: subprojects.jar) {
-    baseName = 'myproject-all'
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+
+task mmJar(type: Jar, dependsOn: subprojects.jar) {
     subprojects.each { subproject ->
         from subproject.configurations.archives.artifacts.files.collect {
             zipTree(it)
@@ -111,47 +99,22 @@ task allJar(type: Jar, dependsOn: subprojects.jar) {
     }
 }
 
-shadowJar {
-    baseName = 'optimus-3.0-beta'
-    classifier = null
-    version = null
+artifacts {
+    archives sourcesJar, javadocJar, mmJar
 }
 
-dependencies {
-    compile subprojects
+signing {
+    sign configurations.archives
 }
 
-jar {
-    def manifestClasspath = configurations.runtime.collect { it.getName() }.join(' ')
-    manifest {
-        attributes  'Implementation-Title': "Test thing",
-                'Implementation-Version': '0.0.1',
-                'Built-By': System.getProperty('user.name'),
-                'Built-Date': new Date(),
-                'Built-JDK': System.getProperty('java.version'),
-                'Built-Gradle': gradle.gradleVersion,
-                'Class-Path': manifestClasspath
-    }
-}
+install.dependsOn mmJar
 
-//artifacts {
-//    archives allJar
-//}
-
-//task mmJar(type: Jar, dependsOn: subprojects.jar) {
-//    subprojects.each { subproject ->
-//        from subproject.configurations.archives.artifacts.files.collect {
-//            zipTree(it)
-//        }
-//    }
-//}
-//
-//install.dependsOn mmJar
+subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
 
 group = "com.testvagrant"
 archivesBaseName = "optimus"
-version = "2.2.9-beta"
+version = "2.3.4-beta"
 
 uploadArchives {
     repositories {
