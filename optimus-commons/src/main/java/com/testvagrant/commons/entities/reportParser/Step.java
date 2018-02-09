@@ -22,6 +22,7 @@ public class Step {
     private String keyword;
     private String name;
     private String error_message;
+    private Long duration;
 
     public String getError_message() {
         return error_message;
@@ -53,5 +54,13 @@ public class Step {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Long duration) {
+        this.duration = duration;
     }
 }

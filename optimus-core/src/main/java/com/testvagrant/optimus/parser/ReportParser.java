@@ -163,6 +163,7 @@ public class ReportParser {
         String stepName = stepObject.get("name").getAsString();
         JsonObject result = stepObject.get("result").getAsJsonObject();
         String status = result.get("status").getAsString();
+        Long duration = result.get("duration").getAsLong();
         String error_message = null;
         if (result.has("error_message")) {
             error_message = result.get("error_message").getAsString();
@@ -172,6 +173,7 @@ public class ReportParser {
                 .withName(stepName)
                 .withKeyword(keyword)
                 .withStatus(status)
+                .withDuration(duration)
                 .withErrorMessage(error_message)
                 .build();
     }

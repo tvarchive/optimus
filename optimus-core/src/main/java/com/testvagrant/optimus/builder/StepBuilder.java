@@ -46,4 +46,9 @@ public class StepBuilder {
         step.setKeyword(keyword);
         return this;
     }
+
+    public StepBuilder withDuration(Long duration) {
+        step.setDuration(duration);
+        return this;
+    }
 }
