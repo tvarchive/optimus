@@ -35,6 +35,11 @@ public class ScenarioBuilder {
         return this;
     }
 
+    public ScenarioBuilder withFeatureName(String featureName) {
+        scenario.setFeatureName(featureName);
+        return this;
+    }
+
     public ScenarioBuilder withId(String id) {
         scenario.setId(id);
         return this;

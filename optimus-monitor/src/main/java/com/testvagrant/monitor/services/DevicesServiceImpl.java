@@ -27,14 +27,14 @@ public class DevicesServiceImpl extends OptimusServiceImpl implements DevicesSer
 
     @Override
     public void insertDeviceList(List<DeviceDetails> deviceDetailsList) {
-        List<Device> devicesFromDeviceDetails = getDevicesFromDeviceDetails(getLatestBuild(),deviceDetailsList);
+        List<Device> devicesFromDeviceDetails = getDevicesFromDeviceDetails(getLatestBuild(), deviceDetailsList);
         new DevicesClient().storeDevices(devicesFromDeviceDetails);
     }
 
     @Override
     public DeviceDetails updateFirstAvailableDeviceToEngaged(JSONObject testFeed) throws DeviceEngagedException {
         Device matchingDevice = new DeviceMatcherFunction().getDeviceQuery(testFeed);
-        System.out.println("Matching Device is "+matchingDevice.toString());
+        System.out.println("Matching Device is " + matchingDevice.toString());
         Device deviceToEngage = new DevicesClient().getDevice(getLatestBuild(), matchingDevice);
         deviceToEngage.setStatus("Engaged");
         DeviceDetails deviceDetails = new DevicesClient().updateDevice(deviceToEngage);
@@ -43,21 +43,21 @@ public class DevicesServiceImpl extends OptimusServiceImpl implements DevicesSer
 
     @Override
     public DeviceDetails updateFirstAvailableDeviceToEngaged(String udid) throws DeviceEngagedException {
-        Device matchingDevice = new DevicesClient().getDeviceByUdid(getLatestBuild(),udid);
+        Device matchingDevice = new DevicesClient().getDeviceByUdid(getLatestBuild(), udid);
         matchingDevice.setStatus("Engaged");
         return new DevicesClient().updateDevice(matchingDevice);
     }
 
     @Override
     public void updateDeviceScreenshot(String udid, byte[] screenshot) {
-        Device deviceToUpdate = new DevicesClient().getDeviceByUdid(getLatestBuild(),udid);
+        Device deviceToUpdate = new DevicesClient().getDeviceByUdid(getLatestBuild(), udid);
         deviceToUpdate.setScreenshot(screenshot);
-        new DevicesClient().storeScreenShot(getLatestBuild(),deviceToUpdate);
+        new DevicesClient().storeScreenShot(getLatestBuild(), deviceToUpdate);
     }
 
     @Override
     public void updateStatusToAvailableForDevice(String udid) throws DeviceReleaseException {
-        Device deviceToUpdate = new DevicesClient().getDeviceByUdid(getLatestBuild(),udid);
+        Device deviceToUpdate = new DevicesClient().getDeviceByUdid(getLatestBuild(), udid);
         deviceToUpdate.setStatus("Available");
         new DevicesClient().releaseDevice(deviceToUpdate);
     }

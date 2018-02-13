@@ -25,7 +25,15 @@ public class Scenario {
     private byte[] failedOnScreen;
     private String stacktrace;
     private String activity;
+    private String featureName;
 
+    public String getFeatureName() {
+        return featureName;
+    }
+
+    public void setFeatureName(String featureName) {
+        this.featureName = featureName;
+    }
 
     public String getId() {
         return id;

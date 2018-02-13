@@ -13,10 +13,11 @@ import static io.restassured.RestAssured.given;
 
 public class ScenariosClient {
 
-    private final String SCENARIOS = MongoService.getMongoService()+"/scenarios";
+    private final String SCENARIOS = MongoService.getMongoService() + "/scenarios";
+
     public Scenario createNewScenario(Scenario scenario, List<Integer> lines) {
-        if(lines.size()>1) {
-            System.out.println("Scenario Lines "+lines);
+        if (lines.size() > 1) {
+            System.out.println("Scenario Lines " + lines);
             Integer scenariosCount = getNumberOfExistingScenariosByName(scenario.getBuildId(), scenario.getScenarioName());
             scenario.setDataRowNumber(++scenariosCount);
         }
@@ -36,23 +37,23 @@ public class ScenariosClient {
         return Integer.valueOf(response.asString());
     }
 
-    public Scenario findRelevantScenario(String buildId, String scenarioName, Integer location,String udid) {
+    public Scenario findRelevantScenario(String buildId, String scenarioName, Integer location, String udid) {
         Response get = given()
                 .header("Content-Type", "application/json")
-                .queryParam("buildId",buildId)
-                .queryParam("scenarioName",scenarioName)
-                .queryParam("location",location)
-                .queryParam("deviceUdid",udid)
-                .get(SCENARIOS+"/search/findByBuildIdAndScenarioNameAndLocationAndDeviceUdid");
+                .queryParam("buildId", buildId)
+                .queryParam("scenarioName", scenarioName)
+                .queryParam("location", location)
+                .queryParam("deviceUdid", udid)
+                .get(SCENARIOS + "/search/findByBuildIdAndScenarioNameAndLocationAndDeviceUdid");
         return get.as(Scenario.class);
     }
 
 
     public Scenario updateScenario(String buildId, Scenario scenario) {
         Response updatedScenario = given()
-                .header("Content-Type","application/json")
+                .header("Content-Type", "application/json")
                 .body(scenario)
-                .patch(SCENARIOS+String.format("/%s",scenario.getId()));
+                .patch(SCENARIOS + String.format("/%s", scenario.getId()));
         return updatedScenario.as(Scenario.class);
     }
 
@@ -61,7 +62,7 @@ public class ScenariosClient {
         Response screenshotPost = given()
                 .header("Content-Type", "application/json")
                 .body(screenshot)
-                .post(MongoService.getMongoService()+"/screenshots");
+                .post(MongoService.getMongoService() + "/screenshots");
         return screenshotPost.asString();
     }
 
@@ -76,18 +77,18 @@ public class ScenariosClient {
 
     public Integer getBuildScenarioCount(String buildId) {
         Response buildScenarioCount = given()
-                .header("Content-Type","application/json")
-                .queryParam("buildId",buildId)
-                .get(SCENARIOS+"/search/countByBuildId");
+                .header("Content-Type", "application/json")
+                .queryParam("buildId", buildId)
+                .get(SCENARIOS + "/search/countByBuildId");
         return Integer.valueOf(buildScenarioCount.asString());
     }
 
     public Integer getBuildScenarioCountByStatus(String buildId, String status) {
         Response buildScenarioCountByStatus = given()
-                .header("Content-Type","application/json")
-                .queryParam("buildId",buildId)
-                .queryParam("status",status)
-                .get(SCENARIOS+"/search/countByBuildIdAndStatus");
+                .header("Content-Type", "application/json")
+                .queryParam("buildId", buildId)
+                .queryParam("status", status)
+                .get(SCENARIOS + "/search/countByBuildIdAndStatus");
         return Integer.valueOf(buildScenarioCountByStatus.asString());
     }
 

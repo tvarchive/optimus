@@ -170,6 +170,7 @@ public class MongoWriter extends MongoIO {
         for (ExecutedScenario executedScenario : scenarios) {
             Scenario scenario = getScenarioByNameAndLocation(executedScenario);
             scenario.setSteps(new Gson().toJson(executedScenario.getSteps()));
+            scenario.setFeatureName(executedScenario.getFeatureName());
             scenario.setFailedOnScreen(executedScenario.getEmbeddedFailedScreen());
             new ScenariosClient().updateScenario(latestBuildID,scenario);
         }

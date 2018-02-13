@@ -24,6 +24,15 @@ public class ExecutedScenario {
     private String id;
     private List<Step> steps;
     private byte[] embeddedFailedScreen;
+    private String featureName;
+
+    public String getFeatureName() {
+        return featureName;
+    }
+
+    public void setFeatureName(String featureName) {
+        this.featureName = featureName;
+    }
 
     public byte[] getEmbeddedFailedScreen() {
         return embeddedFailedScreen;

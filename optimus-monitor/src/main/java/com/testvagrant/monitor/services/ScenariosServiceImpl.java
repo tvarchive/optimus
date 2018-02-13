@@ -50,6 +50,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         for (ExecutedScenario executedScenario : scenarios) {
             Scenario scenario = getScenarioByNameAndLocation(executedScenario);
             scenario.setSteps(new Gson().toJson(executedScenario.getSteps()));
+            scenario.setFeatureName(executedScenario.getFeatureName());
             scenario.setFailedOnScreen(executedScenario.getEmbeddedFailedScreen());
             new ScenariosClient().updateScenario(getLatestBuild(),scenario);
         }

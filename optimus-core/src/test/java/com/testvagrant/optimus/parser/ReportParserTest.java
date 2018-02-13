@@ -20,6 +20,7 @@ package com.testvagrant.optimus.parser;
 import com.testvagrant.commons.entities.reportParser.ExecutedScenario;
 import com.testvagrant.monitor.services.IntellisenseServiceImpl;
 import com.testvagrant.optimus.recommender.ExceptionCollator;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 
 public class ReportParserTest {
@@ -54,6 +56,15 @@ public class ReportParserTest {
         Map<String, List<ExecutedScenario>> collate = exceptionCollator.collate();
         new IntellisenseServiceImpl().writeFailedScenariosByException(collate);
 
+
+    }
+
+    @Test
+    public void testUriExtraction(){
+        String uri = "/Users/sukeshkumar/Development/projects/makemytrip-2.0/src/test/resources/features/MMT.feature";
+        String x = Stream.of(uri.split("/")).reduce((first, last) -> last).get();
+        Assert.assertEquals("MMT.feature", x);
+        Assert.assertEquals("MMT", FilenameUtils.getBaseName(x));
 
     }
 }
