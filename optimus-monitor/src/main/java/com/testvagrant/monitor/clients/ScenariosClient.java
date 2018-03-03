@@ -37,14 +37,14 @@ public class ScenariosClient {
         return Integer.valueOf(response.asString());
     }
 
-    public Scenario findRelevantScenario(String buildId, String scenarioName, Integer location, String udid) {
+    public Scenario findRelevantScenario(String buildId, String scenarioName, Integer location, String deviceId) {
         Response get = given()
                 .header("Content-Type", "application/json")
                 .queryParam("buildId", buildId)
                 .queryParam("scenarioName", scenarioName)
                 .queryParam("location", location)
-                .queryParam("deviceUdid", udid)
-                .get(SCENARIOS + "/search/findByBuildIdAndScenarioNameAndLocationAndDeviceUdid");
+                .queryParam("deviceId", deviceId)
+                .get(SCENARIOS + "/search/findByBuildIdAndScenarioNameAndLocationAndDeviceId");
         return get.as(Scenario.class);
     }
 
@@ -92,22 +92,22 @@ public class ScenariosClient {
         return Integer.valueOf(buildScenarioCountByStatus.asString());
     }
 
-    public List<Scenario> getDistinctScenariosByUdid(String buildId) {
+    public List<Scenario> getDistinctScenariosByDeviceId(String buildId) {
         Response response = given()
                 .header("Content-Type", "application/json")
                 .queryParam("buildId", buildId)
-                .get(SCENARIOS + "/distinctUdid");
+                .get(SCENARIOS + "/distinctDeviceId");
         Scenario[] scenarios = response.as(Scenario[].class);
         return Arrays.asList(scenarios);
     }
 
-    public List<Scenario> getScenariosByActivity(String buildId, String udid, String activity) {
+    public List<Scenario> getScenariosByActivity(String buildId, String deviceId, String activity) {
         Response response = given()
                 .header("Content-Type", "application/json")
                 .queryParam("buildId", buildId)
-                .queryParam("deviceUdid", udid)
+                .queryParam("deviceId", deviceId)
                 .queryParam("activity", activity)
-                .get(SCENARIOS + "/search/findByBuildIdAndDeviceUdidAndActivity");
+                .get(SCENARIOS + "/search/findByBuildIdAndDeviceIdAndActivity");
         ScenariosResponse scenarios = response.as(ScenariosResponse.class);
         return scenarios.getContent();
     }

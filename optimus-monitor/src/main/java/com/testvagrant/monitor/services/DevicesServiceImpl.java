@@ -32,20 +32,16 @@ public class DevicesServiceImpl extends OptimusServiceImpl implements DevicesSer
     }
 
     @Override
-    public DeviceDetails updateFirstAvailableDeviceToEngaged(JSONObject testFeed) throws DeviceEngagedException {
+    public Device updateFirstAvailableDeviceToEngaged(JSONObject testFeed) throws DeviceEngagedException {
         Device matchingDevice = new DeviceMatcherFunction().getDeviceQuery(testFeed);
         System.out.println("Matching Device is " + matchingDevice.toString());
-        Device deviceToEngage = new DevicesClient().getDevice(getLatestBuild(), matchingDevice);
-        deviceToEngage.setStatus("Engaged");
-        DeviceDetails deviceDetails = new DevicesClient().updateDevice(deviceToEngage);
-        return deviceDetails;
+        return new DevicesClient().getDevice(getLatestBuild(), matchingDevice);
     }
 
+
     @Override
-    public DeviceDetails updateFirstAvailableDeviceToEngaged(String udid) throws DeviceEngagedException {
-        Device matchingDevice = new DevicesClient().getDeviceByUdid(getLatestBuild(), udid);
-        matchingDevice.setStatus("Engaged");
-        return new DevicesClient().updateDevice(matchingDevice);
+    public Device updateFirstAvailableDeviceToEngaged(String udid) throws DeviceEngagedException {
+        return new DevicesClient().getDeviceByUdid(getLatestBuild(), udid);
     }
 
     @Override

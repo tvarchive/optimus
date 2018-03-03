@@ -19,6 +19,7 @@ package com.testvagrant.optimus.device;
 
 import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.commons.exceptions.DeviceEngagedException;
+import com.testvagrant.monitor.requests.Device;
 import com.testvagrant.monitor.services.DevicesServiceImpl;
 import com.testvagrant.optimus.utils.Commons;
 import org.json.JSONObject;
@@ -28,7 +29,7 @@ import org.json.simple.parser.ParseException;
 import java.util.List;
 
 public class DeviceFinder {
-    public DeviceDetails getAvailableDeviceAndUpdateToEngaged(JSONObject testFeed) throws DeviceEngagedException {
+    public Device getAvailableDeviceAndUpdateToEngaged(JSONObject testFeed) throws DeviceEngagedException {
         List<DeviceDetails> deviceDetailsList = new DevicesServiceImpl().getAllDevices();
 
         System.out.println("-------- All devices and there status --------");
@@ -44,7 +45,7 @@ public class DeviceFinder {
         }
 //        DeviceDetails deviceDetails = new DeviceMiner(deviceOpDetailsList, testFeed).getAvailableDevice();
 
-        DeviceDetails deviceDetails = null;
+        Device deviceDetails = null;
 
         synchronized (this) {
             if (new Commons().isUDIDAvailable(testFeed)) {

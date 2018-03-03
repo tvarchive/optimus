@@ -3,10 +3,11 @@ package com.testvagrant.optimus.parser;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.commons.exceptions.DeviceEngagedException;
+import com.testvagrant.monitor.requests.Device;
 import com.testvagrant.optimus.builder.CapabilitiesBuilder;
 import com.testvagrant.optimus.device.DeviceFinder;
+import com.testvagrant.optimus.device.DeviceAllocation;
 import com.testvagrant.optimus.entity.ExecutionDetails;
 import com.testvagrant.optimus.entity.Sauce;
 import org.json.JSONArray;
@@ -14,7 +15,9 @@ import org.json.JSONObject;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.testvagrant.optimus.parser.TestFeedConstants.*;
 
@@ -31,9 +34,8 @@ public class OptimusConfigParser {
     }
 
 
-
     public ExecutionDetails getExecutionDetails() {
-        ExecutionDetails execDetails = getObjectFromJson(jsonObjectSp.get(EXEC_DETAILS),ExecutionDetails.class);
+        ExecutionDetails execDetails = getObjectFromJson(jsonObjectSp.get(EXEC_DETAILS), ExecutionDetails.class);
         return execDetails;
     }
 
@@ -49,28 +51,12 @@ public class OptimusConfigParser {
     }
 
     public boolean isMonitoring() {
-       return true;
+        return true;
     }
 
-    public HashMap<String, DesiredCapabilities> mapOwnerToDesiredCapabilities() throws IOException, DeviceEngagedException {
-        HashMap<String, DesiredCapabilities> ownerToCapabilitiesMap = new HashMap();
-
-        JSONArray testFeedArray = (JSONArray) jsonObject.get(TEST_FEED);
-        for (int testFeedIterator = 0; testFeedIterator < testFeedArray.length(); testFeedIterator++) {
-
-            JSONObject testFeedJSON = (JSONObject) testFeedArray.get(testFeedIterator);
-            System.out.println("updated testFeed -- " + testFeedJSON.toString());
-            DeviceDetails deviceDetails = new DeviceFinder().getAvailableDeviceAndUpdateToEngaged(testFeedJSON);
-            updateTestFeed(testFeedJSON,getAppBelongingTo(testFeedJSON.getString(BELONGS_TO)));
-            DesiredCapabilities desiredCapabilities = new CapabilitiesBuilder(testFeedJSON, deviceDetails).buildCapabilities();
-            ownerToCapabilitiesMap.put((String) testFeedJSON.get(BELONGS_TO), desiredCapabilities);
-        }
-        return ownerToCapabilitiesMap;
-    }
-
-    private void updateTestFeed(JSONObject testFeed,String appName) {
-       testFeed.getJSONObject("optimusDesiredCapabilities").getJSONObject("appiumServerCapabilities")
-               .put("app",appName);
+    private void updateTestFeed(JSONObject testFeed, String appName) {
+        testFeed.getJSONObject("optimusDesiredCapabilities").getJSONObject("appiumServerCapabilities")
+                .put("app", appName);
     }
 
     public boolean isForAndroid() {
@@ -110,10 +96,10 @@ public class OptimusConfigParser {
             JSONObject testFeedJSON = (JSONObject) testFeedArray.get(testFeedIterator);
             if (testFeedJSON.getString(BELONGS_TO).equalsIgnoreCase(appConsumer)) {
                 String appName = testFeedJSON.getJSONObject(OPTIMUS_DESIRED_CAPABILITIES).getJSONObject(APPIUM_SERVER_CAPABILITIES).getString(APP);
-                if(appName.contains(".apk")||appName.contains(".ipa")||appName.contains(".app")) {
+                if (appName.contains(".apk") || appName.contains(".ipa") || appName.contains(".app")) {
                     return appName;
-                }else {
-                    return appName+getAppExtension(testFeedJSON);
+                } else {
+                    return appName + getAppExtension(testFeedJSON);
                 }
             }
 
@@ -148,5 +134,32 @@ public class OptimusConfigParser {
 
     private <T> T getObjectFromJson(JsonElement jsonElement, Class<T> classOfT) {
         return new Gson().fromJson(jsonElement, classOfT);
+    }
+
+    public List<DeviceAllocation> allocateDevicesForCurrentScenario() throws DeviceEngagedException {
+
+        List<DeviceAllocation> deviceAllocations = new ArrayList<>();
+
+
+        JSONArray testFeedArray = (JSONArray) jsonObject.get(TEST_FEED);
+        for (int testFeedIterator = 0; testFeedIterator < testFeedArray.length(); testFeedIterator++) {
+            DeviceAllocation allocatedDevice = new DeviceAllocation();
+            JSONObject testFeedJSON = (JSONObject) testFeedArray.get(testFeedIterator);
+
+            System.out.println("updated testFeed -- " + testFeedJSON.toString());
+
+            Device deviceDetails = new DeviceFinder().getAvailableDeviceAndUpdateToEngaged(testFeedJSON);
+            updateTestFeed(testFeedJSON, getAppBelongingTo(testFeedJSON.getString(BELONGS_TO)));
+            DesiredCapabilities desiredCapabilities = new CapabilitiesBuilder(testFeedJSON, deviceDetails).buildCapabilities();
+
+            allocatedDevice.setOwner((String) testFeedJSON.get(BELONGS_TO));
+            allocatedDevice.setDevice(deviceDetails);
+            allocatedDevice.setCapabilities(desiredCapabilities);
+
+            deviceAllocations.add(allocatedDevice);
+        }
+        return deviceAllocations;
+
+
     }
 }

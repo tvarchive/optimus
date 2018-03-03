@@ -12,10 +12,10 @@ public class Scenario {
     private String scenarioName;
     private Integer dataRowNumber = 0;
     private Integer location;
-    private String deviceUdid;
     private Collection<String> tags;
     private Date startTime;
     private String buildId;
+    private String deviceId;
     private String status;
     private Boolean completed;
     private Date endTime;
@@ -26,6 +26,14 @@ public class Scenario {
     private String stacktrace;
     private String activity;
     private String featureName;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getFeatureName() {
         return featureName;
@@ -67,12 +75,7 @@ public class Scenario {
         this.location = location;
     }
 
-    public String getDeviceUdid() {
-        return deviceUdid;
-    }
-
     public void setDeviceUdid(String deviceUdid) {
-        this.deviceUdid = deviceUdid;
     }
 
     public Collection<String> getTags() {

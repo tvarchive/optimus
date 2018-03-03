@@ -30,6 +30,15 @@ public class SmartBOT {
     private String runsOn;
     private Scenario scenario;
     private String appPackageName;
+    private String deviceId;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getAppPackageName() {
         return appPackageName;

@@ -22,8 +22,10 @@ import com.testvagrant.commons.entities.SmartBOT;
 import com.testvagrant.commons.exceptions.DeviceEngagedException;
 import com.testvagrant.commons.exceptions.DeviceMatchingException;
 import com.testvagrant.commons.helpers.ScenarioHelper;
+import com.testvagrant.monitor.clients.DevicesClient;
 import com.testvagrant.monitor.exceptions.DeviceReleaseException;
 import com.testvagrant.monitor.performance.CrashMonitor;
+import com.testvagrant.monitor.services.BuildsServiceImpl;
 import com.testvagrant.monitor.services.DevicesServiceImpl;
 import com.testvagrant.optimus.builder.SmartBOTBuilder;
 import com.testvagrant.optimus.parser.OptimusConfigParser;
@@ -115,7 +117,7 @@ public class OptimusController {
                 if (!engagedBOT.getRunsOn().equalsIgnoreCase("EMULATOR")) {
                     new CrashMonitor(engagedBOT).captureCrashes();
                 }
-            }  catch (Exception e) {
+            } catch (Exception e) {
                 //ignoring exception for arrayout of bounds thing
             }
             try {
@@ -145,35 +147,36 @@ public class OptimusController {
     public List<SmartBOT> registerSmartBOTs() throws IOException, InterruptedException, DeviceMatchingException, DeviceEngagedException {
         logger.info("Starting Scenario -- " + scenario.getName());
         List<SmartBOT> smartBOTs = new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
 
-        HashMap<String, DesiredCapabilities> appToDeviceMap = optimusConfigParser.mapOwnerToDesiredCapabilities();
 
-        for (Map.Entry<String, DesiredCapabilities> entry : appToDeviceMap.entrySet()) {
-            String udid = (String) entry.getValue().getCapability("udid");
+        List<DeviceAllocation> deviceAllocations = optimusConfigParser.allocateDevicesForCurrentScenario();
+
+        for (DeviceAllocation allocatedDevice : deviceAllocations) {
+            String udid = allocatedDevice.getDevice().getUdid();
 
             String uniqueScenarioName = new ScenarioHelper(scenario).getUniqueScenarioName();
             AppiumDriverLocalService appiumService = null;
             AppiumDriver driver = null;
             AppiumServerManager appiumServerManager = new AppiumServerManager(optimusConfigParser);
-            if(platformIOS(entry.getValue())) {
+            if (platformIOS(allocatedDevice.getCapabilities())) {
                 appiumService = appiumServerManager
-                        .startAppiumService(uniqueScenarioName,udid);
-                driver = addDriver(appiumService.getUrl(), entry.getValue());
+                        .startAppiumService(uniqueScenarioName, udid);
+                driver = addDriver(appiumService.getUrl(), allocatedDevice.getCapabilities());
             } else {
                 appiumService = new AppiumServerManager(optimusConfigParser)
                         .startAppiumService(uniqueScenarioName, udid);
-                driver = addDriver(appiumService.getUrl(), entry.getValue());
+                driver = addDriver(appiumService.getUrl(), allocatedDevice.getCapabilities());
             }
             logger.info(uniqueScenarioName + "--" + "driver instance created for " + udid);
 
-            String appPackage = (String) entry.getValue().getCapability("appPackage");
+            String appPackage = (String) allocatedDevice.getCapabilities().getCapability("appPackage");
 
             SmartBOT bot = new SmartBOTBuilder()
-                    .withBelongsTo(entry.getKey())
+                    .withBelongsTo(allocatedDevice.getOwner())
                     .withRunsOn(getRunsOnBasedOn(udid))
-                    .withCapabilities(entry.getValue())
+                    .withCapabilities(allocatedDevice.getCapabilities())
                     .withDeviceUdid(udid)
+                    .withDeviceId(allocatedDevice.getDevice().getId())
                     .withDriver(driver)
                     .withAppiumService(appiumService)
                     .withScenario(scenario)
@@ -182,11 +185,9 @@ public class OptimusController {
 
             byte[] deviceScreenshot = driver.getScreenshotAs(OutputType.BYTES);
             new DevicesServiceImpl().updateDeviceScreenshot(udid, deviceScreenshot);
+            new BuildsServiceImpl().updateBuildRunMode(System.getProperty("runMode"));
             smartBOTs.add(bot);
 
-            for (SmartBOT smartBOT : smartBOTs) {
-                scenario.write(smartBOT.getDeviceUdid());
-            }
             new OnDevice(bot).clearADBLogs();
 
             logger.info(scenario + "---" + "BOT registered successfully for -- " + udid);
@@ -197,6 +198,11 @@ public class OptimusController {
             listener.setSmartBOTs(smartBOTs);
             listener.start();
         }
+
+        for (SmartBOT smartBOT : smartBOTs) {
+            scenario.write(smartBOT.getDeviceUdid());
+        }
+
         return smartBOTs;
     }
 
@@ -234,8 +240,8 @@ public class OptimusController {
     }
 
     private static AppiumDriver setUpDevice(URL url, DesiredCapabilities capabilities) throws MalformedURLException {
-        if(RunProperties.isDevMode()) {
-            capabilities.setCapability("noReset",true);
+        if (RunProperties.isDevMode()) {
+            capabilities.setCapability("noReset", true);
         }
         if (capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
             return new AndroidDriver(url, capabilities);

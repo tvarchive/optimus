@@ -30,38 +30,6 @@ import java.util.List;
 
 public class DeviceMatcherFunction {
 
-    private static final String status = "Available";
-
-
-    public BasicDBObject prepareQuery(JSONObject testfeed) {
-
-        BasicDBObject andQuery = new BasicDBObject();
-        List<BasicDBObject> obj = new ArrayList<>();
-
-        obj.add(new BasicDBObject("status", status));
-
-        TestFeedParser testFeedParser = new TestFeedParser(testfeed);
-        TestFeedDetails testFeedDetails = testFeedParser.parse();
-        obj.add(new BasicDBObject("platform",testFeedDetails.getPlatform().toUpperCase()));
-        if (StringUtils.isNoneBlank(testFeedDetails.getUdid())) {
-            obj.add(new BasicDBObject("udid", testFeedDetails.getUdid()));
-        }
-        if (StringUtils.isNoneBlank(testFeedDetails.getPlatformVersion())) {
-            obj.add(new BasicDBObject("platformVersion", testFeedDetails.getPlatformVersion()));
-        }
-        if (!testFeedDetails.getRunsOn().equalsIgnoreCase("any")) {
-            obj.add(new BasicDBObject("runsOn", testFeedDetails.getRunsOn().toUpperCase()));
-        }
-        if (StringUtils.isNoneBlank(testFeedDetails.getDeviceName())) {
-            obj.add(new BasicDBObject("deviceName", testFeedDetails.getDeviceName()));
-        }
-
-
-        andQuery.put("$and", obj);
-
-        return andQuery;
-    }
-
 
     public Device getDeviceQuery(JSONObject testfeed) {
         Device device = new Device();

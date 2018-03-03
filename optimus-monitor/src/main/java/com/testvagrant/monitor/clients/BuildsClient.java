@@ -16,6 +16,7 @@ public class BuildsClient {
 
     public Build createNewBuild() {
         System.out.println("Builds Path" +BUILDS);
+
         Build buildsRequest = new BuildsRequestBuilder().build();
         Response post = given()
                 .header("Content-Type", "application/json")

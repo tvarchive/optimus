@@ -18,6 +18,7 @@
 package com.testvagrant.optimus.builder;
 
 import com.testvagrant.commons.entities.DeviceDetails;
+import com.testvagrant.monitor.requests.Device;
 import org.json.JSONObject;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -28,22 +29,22 @@ public class CapabilitiesBuilder {
     private DesiredCapabilities capabilities = new DesiredCapabilities();
     private JSONObject testFeedJSON;
 
-    public CapabilitiesBuilder(JSONObject testFeedJSON, DeviceDetails deviceDetails) {
+    public CapabilitiesBuilder(JSONObject testFeedJSON, Device device) {
 
         this.testFeedJSON = testFeedJSON;
         JSONObject appiumServerCapabilities = (JSONObject) ((JSONObject) testFeedJSON.get("optimusDesiredCapabilities")).get("appiumServerCapabilities");
         if(!isNativeApp()) {
-            buildWebAppCapabilities(appiumServerCapabilities,deviceDetails);
+            buildWebAppCapabilities(appiumServerCapabilities, device);
             return;
         }
         File app = getAppFile((String) testFeedJSON.get("appDir"), (String) appiumServerCapabilities.get("app"));
         capabilities.setCapability("app", app.getAbsolutePath());
-        capabilities.setCapability("udid", deviceDetails.getUdid());
-        capabilities.setCapability("deviceName",deviceDetails.getDeviceName());
+        capabilities.setCapability("udid", device.getUdid());
+        capabilities.setCapability("deviceName", device.getDeviceName());
         initializeCapabilities();
     }
 
-    private void buildWebAppCapabilities(JSONObject appiumServerCapabilities, DeviceDetails deviceDetails) {
+    private void buildWebAppCapabilities(JSONObject appiumServerCapabilities, Device deviceDetails) {
         if(isBrowserAppProvided(appiumServerCapabilities)) {
             File app = getAppFile((String) testFeedJSON.get("appDir"), (String) appiumServerCapabilities.get("app"));
             capabilities.setCapability("app",app.getAbsolutePath());

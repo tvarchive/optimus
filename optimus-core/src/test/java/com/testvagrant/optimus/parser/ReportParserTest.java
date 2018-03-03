@@ -35,7 +35,7 @@ public class ReportParserTest {
 
     @Test
     public void foo() throws IOException {
-        List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/reports/cucumber")).parse();
+        List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/reports/cucumber"), latestBuildId).parse();
         for (ExecutedScenario executedScenario : executedScenarios) {
             Assert.assertNotNull(executedScenario);
         }
@@ -43,7 +43,7 @@ public class ReportParserTest {
 
     @Test
     public void foo1() throws IOException {
-        List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/reports/cucumber")).parse();
+        List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/reports/cucumber"), latestBuildId).parse();
         for (ExecutedScenario executedScenario : executedScenarios) {
             Assert.assertNotNull(executedScenario);
         }
@@ -51,7 +51,7 @@ public class ReportParserTest {
 
     @Test
     public void test() throws IOException {
-        List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/jsonreports")).parse();
+        List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/jsonreports"), latestBuildId).parse();
         ExceptionCollator exceptionCollator = new ExceptionCollator(executedScenarios);
         Map<String, List<ExecutedScenario>> collate = exceptionCollator.collate();
         new IntellisenseServiceImpl().writeFailedScenariosByException(collate);

@@ -24,11 +24,10 @@ import com.google.gson.JsonParser;
 import com.testvagrant.commons.entities.reportParser.ExecutedScenario;
 import com.testvagrant.commons.entities.reportParser.Feature;
 import com.testvagrant.commons.entities.reportParser.Step;
+import com.testvagrant.monitor.clients.DevicesClient;
+import com.testvagrant.monitor.requests.Device;
 import com.testvagrant.optimus.builder.ScenarioBuilder;
 import com.testvagrant.optimus.builder.StepBuilder;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,15 +36,16 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class ReportParser {
 
 
     private File reportFolder;
+    private String buildId;
 
-    public ReportParser(File reportFolder) {
+    public ReportParser(File reportFolder, String latestBuildId) {
         this.reportFolder = reportFolder;
+        buildId = latestBuildId;
     }
 
     public List<ExecutedScenario> parse() throws IOException {
@@ -81,12 +81,13 @@ public class ReportParser {
                                     stepList.add(getStepDetails(step));
                                 }
 
+                                Device deviceByUdid = new DevicesClient().getDeviceByUdid(buildId, deviceName);
                                 if (scenarioSteps.size() > 0) {
                                     scenarios.add(new ScenarioBuilder()
                                             .withId(id)
                                             .withFeatureName(featureName)
                                             .withSteps(stepList)
-                                            .withDeviceName(deviceName)
+                                            .withDeviceName(deviceByUdid.getId())
                                             .withEmbeddedScreen(getEmbeddedScreenshot(element))
                                             .build());
                                 }

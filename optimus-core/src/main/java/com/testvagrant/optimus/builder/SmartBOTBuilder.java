@@ -47,6 +47,11 @@ public class SmartBOTBuilder {
         return this;
     }
 
+    public SmartBOTBuilder withDeviceId(String deviceId) {
+        smartBOT.setDeviceId(deviceId);
+        return this;
+    }
+
     public SmartBOTBuilder withDriver(AppiumDriver androidDriver) {
         smartBOT.setDriver(androidDriver);
         return this;

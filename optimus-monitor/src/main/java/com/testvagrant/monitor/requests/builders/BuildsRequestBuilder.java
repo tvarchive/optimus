@@ -21,6 +21,11 @@ public class BuildsRequestBuilder {
         return this;
     }
 
+    public BuildsRequestBuilder withRunMode(String runMode) {
+        builds.setRunMode(runMode);
+        return this;
+    }
+
     public BuildsRequestBuilder withBuildEndTime(Date buildEndTime) {
         builds.setBuildEndTime(buildEndTime);
         return this;

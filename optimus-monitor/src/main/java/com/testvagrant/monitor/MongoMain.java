@@ -39,12 +39,12 @@ public class MongoMain {
     private static String mongoService;
 
     public MongoMain(String testFeedName) {
-        appJson =  new JsonUtil().getAppJson(testFeedName+".json");
+        appJson = new JsonUtil().getAppJson(testFeedName + ".json");
         runConfig = getRunConfig();
     }
 
     private String getRunConfig() {
-        JsonObject testFeed = new Gson().fromJson(appJson,JsonObject.class);
+        JsonObject testFeed = new Gson().fromJson(appJson, JsonObject.class);
         JsonObject executionDetails = testFeed.getAsJsonObject("executionDetails");
         String runConfig;
         try {

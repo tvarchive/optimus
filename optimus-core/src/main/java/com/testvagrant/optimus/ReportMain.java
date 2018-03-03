@@ -19,6 +19,8 @@ package com.testvagrant.optimus;
 
 import com.testvagrant.commons.entities.reportParser.ExecutedScenario;
 import com.testvagrant.commons.utils.JsonUtil;
+import com.testvagrant.monitor.clients.BuildsClient;
+import com.testvagrant.monitor.services.BuildsServiceImpl;
 import com.testvagrant.monitor.services.IntellisenseServiceImpl;
 import com.testvagrant.monitor.services.ScenariosServiceImpl;
 import com.testvagrant.optimus.parser.OptimusConfigParser;
@@ -34,7 +36,8 @@ public class ReportMain {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Parsing report");
-        List<ExecutedScenario> scenarios = new ReportParser(new File("build/reports/cucumber")).parse();
+        String latestBuildId = new BuildsClient().getLatestBuildId();
+        List<ExecutedScenario> scenarios = new ReportParser(new File("build/reports/cucumber"), latestBuildId).parse();
         if(monitoringIsOn()) {
             new ScenariosServiceImpl().updateExecutionDetailsFor(scenarios);
             ExceptionCollator collator = new ExceptionCollator(scenarios);

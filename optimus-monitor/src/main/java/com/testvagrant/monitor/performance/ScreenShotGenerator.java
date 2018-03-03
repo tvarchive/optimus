@@ -70,26 +70,26 @@ public class ScreenShotGenerator extends TimerTask {
     private void captureScreenshots(int interval) throws IOException {
         createFolder(getUDID());
         Runtime rt = Runtime.getRuntime();
-        rt.exec(String.format(CAPTURE_SCREENSHOT,smartBOT.getDeviceUdid(),getScenarioID(),interval));
+        rt.exec(String.format(CAPTURE_SCREENSHOT, smartBOT.getDeviceUdid(), getScenarioID(), interval));
     }
 
     public void updateScreenshotStatistics(List<ScreenshotStatistics> screenShots) {
-        File file = new File("build/screenshotstemp/"+getUDID()+"/"+getScenarioID());
-        if(file.exists()) {
+        File file = new File("build/screenshotstemp/" + getUDID() + "/" + getScenarioID());
+        if (file.exists()) {
             try {
-                screenShots.stream().forEach(screenShot-> {
-                    Optional<File> first = Arrays.stream(file.listFiles()).filter(fileName -> fileName.getName().equals(String.valueOf(screenShot.getInterval())+".png")).findFirst();
-                    if(first.isPresent()) {
+                screenShots.stream().forEach(screenShot -> {
+                    Optional<File> first = Arrays.stream(file.listFiles()).filter(fileName -> fileName.getName().equals(String.valueOf(screenShot.getInterval()) + ".png")).findFirst();
+                    if (first.isPresent()) {
                         try {
-                            if(lastImage!=null) {
-                                double imageDiff = ImageComparator.getImageDifference(lastImage,first.get());
-                                if(imageDiff>=0.3) {
+                            if (lastImage != null) {
+                                double imageDiff = ImageComparator.getImageDifference(lastImage, first.get());
+                                if (imageDiff >= 0.3) {
                                     screenShot.setScreenshot(new ImageResizer(first.get()).resizeImage());
                                     screenShot.setUnique(true);
                                 }
                             } else {
-                                    screenShot.setScreenshot(new ImageResizer(first.get()).resizeImage());
-                                    screenShot.setUnique(true);
+                                screenShot.setScreenshot(new ImageResizer(first.get()).resizeImage());
+                                screenShot.setUnique(true);
                             }
                             lastImage = first.get();
                         } catch (IOException e) {
@@ -106,25 +106,26 @@ public class ScreenShotGenerator extends TimerTask {
 
 
     public void deleteImageFolder() {
-        File file = new File("build/screenshotstemp/"+getUDID()+"/"+getScenarioID());
-        if(file.exists()) {
+        File file = new File("build/screenshotstemp/" + getUDID() + "/" + getScenarioID());
+        if (file.exists()) {
             file.delete();
         }
     }
 
     private String getUDID() {
-        return smartBOT.getDeviceUdid().replaceAll("\\.","").replaceAll(":","");
+        return smartBOT.getDeviceUdid().replaceAll("\\.", "").replaceAll(":", "");
     }
 
     private String getScenarioID() {
-        return smartBOT.getScenario().getId().replaceAll("[^a-zA-Z0-9]","");
+        return smartBOT.getScenario().getId().replaceAll("[^a-zA-Z0-9]", "");
     }
 
     public void importScreenshots() {
+        System.out.println("Importing screenshots from -- " + smartBOT.getDeviceUdid());
         String line;
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process p = runtime.exec(String.format("adb -s %s pull /sdcard/%s build/screenshotstemp/%s",smartBOT.getDeviceUdid(),getScenarioID(),getUDID()));
+            Process p = runtime.exec(String.format("adb -s %s pull /sdcard/%s build/screenshotstemp/%s", smartBOT.getDeviceUdid(), getScenarioID(), getUDID()));
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(
                     p.getInputStream()));
             BufferedReader stdError = new BufferedReader(new InputStreamReader(
