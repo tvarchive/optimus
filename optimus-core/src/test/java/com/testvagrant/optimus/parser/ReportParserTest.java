@@ -33,6 +33,8 @@ import java.util.stream.Stream;
 
 public class ReportParserTest {
 
+    private String latestBuildId = "5a9a459a290ec431ab854953";
+
     @Test
     public void foo() throws IOException {
         List<ExecutedScenario> executedScenarios = new ReportParser(new File("src/test/resources/reports/cucumber"), latestBuildId).parse();
