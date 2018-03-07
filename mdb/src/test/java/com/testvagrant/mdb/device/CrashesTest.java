@@ -13,7 +13,7 @@ public class CrashesTest {
     public void captureCrash() {
         SmartBOT smartBOT = new SmartBOT();
         smartBOT.setDeviceUdid("4200935feed2a28f");
-        smartBOT.setAppPackageName("com.gojek.app.staging");
+        smartBOT.setAppPackageName("com.abcd.app.staging");
         DumpsysParser dumpsysParser = new DumpsysParser(smartBOT);
         Optional<Exceptions> exception = dumpsysParser.getException();
        exception.ifPresent(exceptions -> {
