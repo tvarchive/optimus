@@ -18,31 +18,24 @@
 package com.testvagrant.optimus;
 
 import com.testvagrant.monitor.MongoMain;
+import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.exceptions.MongoInstanceException;
-import com.testvagrant.optimus.parser.OptimusConfigParser;
 import com.testvagrant.optimus.register.DeviceRegistrar;
 import com.testvagrant.optimus.utils.DeviceMatrix;
 
+import java.io.IOException;
+
 public class OptimusMain {
 
-    public static void init(String testFeed) throws MongoInstanceException {
-        String setupCompleted = System.getProperty("setupCompleted");
-        if(setupCompleted==null) {
-            setupRunConfiguration(testFeed);
-            new MongoMain(testFeed).createOptimusDb();
-            new DeviceRegistrar().setUpDevices(new DeviceMatrix(testFeed));
-        }
+    public static void main(String[] args) throws IOException, MongoInstanceException {
+        MongoService.setMongoService(System.getProperty("serviceUrl"));
+        OptimusMain optimusSetup = new OptimusMain();
+        optimusSetup.setup(args[0]);
     }
 
-    public static void setupRunConfiguration(String testFeed) {
-        String runConfig = new OptimusConfigParser(testFeed).getExecutionDetails().getRunConfig();
+    private void setup(String testFeed) throws IOException, MongoInstanceException {
+        new MongoMain(testFeed).createOptimusDb();
+        new DeviceRegistrar().setUpDevices(new DeviceMatrix(testFeed + ".json"));
     }
-
-    public static void main(String[] args) {
-        new DeviceRegistrar().setUpDevices(new DeviceMatrix(args[0]));
-        System.exit(0);
-    }
-
-
 
 }

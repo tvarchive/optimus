@@ -20,17 +20,11 @@ package com.testvagrant.monitor;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mongodb.client.MongoDatabase;
-import com.testvagrant.commons.entities.RunConfiguration;
-import com.testvagrant.commons.parser.RunConfigParser;
 import com.testvagrant.commons.utils.JsonUtil;
-import com.testvagrant.monitor.entities.MongoService;
 import com.testvagrant.monitor.exceptions.MongoInstanceException;
 import com.testvagrant.monitor.services.BuildsServiceImpl;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import static com.testvagrant.monitor.radiator.MongoDriverService.mongoService;
 
 public class MongoMain {
 
@@ -56,14 +50,6 @@ public class MongoMain {
     }
 
     public void createOptimusDb() throws MongoInstanceException {
-        System.out.println("Getting started with mongo main");
-        try {
-            mongoService().start();
-        } catch (IOException e) {
-            throw new MongoInstanceException();
-        }
-        RunConfiguration runConfiguration = RunConfigParser.getRunConfiguration(runConfig);
-        MongoService.setMongoService(runConfiguration.getDbservice());
         System.out.println("Notifying build start");
         new BuildsServiceImpl().notifyBuildStart();
     }

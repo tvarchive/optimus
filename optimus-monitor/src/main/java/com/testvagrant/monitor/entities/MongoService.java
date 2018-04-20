@@ -2,7 +2,7 @@ package com.testvagrant.monitor.entities;
 
 public class MongoService {
 
-    private static String mongoService = "http://localhost:8090/v1";
+    private static String mongoService = System.getProperty("serviceUrl","http://localhost:8080/v1");
 
     public static String getMongoService() {
         return mongoService;
