@@ -56,11 +56,11 @@ public class AppiumServerManager {
                 .withIPAddress("127.0.0.1")
                 .withArgument(SESSION_OVERRIDE)
                 .usingAnyFreePort()
-                .withLogFile(new File(String.format("build/%s.log", scenarioName + "_" + udid)));
-        if(isAndroid) {
+                .withLogFile(new File(String.format("build" + File.separator + "%s.log", scenarioName + "_" + udid)));
+        if (isAndroid) {
             appiumServiceBuilder.withArgument(AndroidServerFlag.BOOTSTRAP_PORT_NUMBER, String.valueOf(aRandomOpenPortOnAllLocalInterfaces()));
         } else {
-            appiumServiceBuilder.withArgument(WDAServerFlag.WDA_PORT,String.valueOf(wdaPort));
+            appiumServiceBuilder.withArgument(WDAServerFlag.WDA_PORT, String.valueOf(wdaPort));
         }
         appiumService = AppiumDriverLocalService.buildService(appiumServiceBuilder);
         appiumService.start();

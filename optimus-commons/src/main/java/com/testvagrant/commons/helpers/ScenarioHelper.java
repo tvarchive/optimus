@@ -18,6 +18,7 @@ package com.testvagrant.commons.helpers;
 
 import cucumber.api.Scenario;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,12 +61,16 @@ public class ScenarioHelper {
     }
 
     //Getting line number from the uri string with changes according to cucumber 2.0.1
-    private String getLineNumber() {
+    public String getLineNumber() {
         String id = scenario.getId();
         if (id.contains(":")) {
-            String[] uriArray = id.split(":");
-            if (uriArray.length > 1) {
-                return uriArray[1];
+            if (SystemUtils.IS_OS_WINDOWS) {
+                int colonIndex = id.lastIndexOf(":");
+                return id.substring(colonIndex + 1, id.length());
+            } else {
+                String[] uriArray = id.split(":");
+                if (uriArray.length > 1)
+                    return uriArray[1];
             }
         }
         throw new RuntimeException("Cannot extract line number from the String." + scenario.getId());

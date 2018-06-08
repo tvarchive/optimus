@@ -19,10 +19,12 @@ package com.testvagrant.optimus.builder;
 
 import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.monitor.requests.Device;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 public class CapabilitiesBuilder {
@@ -33,7 +35,7 @@ public class CapabilitiesBuilder {
 
         this.testFeedJSON = testFeedJSON;
         JSONObject appiumServerCapabilities = (JSONObject) ((JSONObject) testFeedJSON.get("optimusDesiredCapabilities")).get("appiumServerCapabilities");
-        if(!isNativeApp()) {
+        if (!isNativeApp()) {
             buildWebAppCapabilities(appiumServerCapabilities, device);
             return;
         }
@@ -45,12 +47,12 @@ public class CapabilitiesBuilder {
     }
 
     private void buildWebAppCapabilities(JSONObject appiumServerCapabilities, Device deviceDetails) {
-        if(isBrowserAppProvided(appiumServerCapabilities)) {
+        if (isBrowserAppProvided(appiumServerCapabilities)) {
             File app = getAppFile((String) testFeedJSON.get("appDir"), (String) appiumServerCapabilities.get("app"));
-            capabilities.setCapability("app",app.getAbsolutePath());
+            capabilities.setCapability("app", app.getAbsolutePath());
         }
-        capabilities.setCapability("udid",deviceDetails.getUdid());
-        capabilities.setCapability("deviceName",deviceDetails.getDeviceName());
+        capabilities.setCapability("udid", deviceDetails.getUdid());
+        capabilities.setCapability("deviceName", deviceDetails.getDeviceName());
         initializeCapabilities();
     }
 
@@ -100,8 +102,9 @@ public class CapabilitiesBuilder {
                 desiredCapabilities.setCapability(key, platformSpecificCapabilities.get(key));
             } else if (value instanceof Integer) {
                 desiredCapabilities.setCapability(key, platformSpecificCapabilities.getInt(key));
+            } else if (value instanceof JSONArray) {
+                desiredCapabilities.setCapability(key, platformSpecificCapabilities.getJSONArray(key));
             }
-
         }
     }
 
