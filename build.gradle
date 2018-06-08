@@ -1,5 +1,5 @@
 group 'com.testvagrant'
-version '2.3.8-beta'
+version '3.0'
 
 
 
@@ -98,65 +98,65 @@ task mmJar(type: Jar, dependsOn: subprojects.jar) {
     }
 }
 
-//artifacts {
-//    archives sourcesJar, javadocJar, mmJar
-//}
-//
-//signing {
-//    sign configurations.archives
-//}
-//
-install.dependsOn mmJar
-//
-//subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
-//
-//
-//group = "com.testvagrant"
-//archivesBaseName = "optimus"
-//version = "2.3.4-beta"
+artifacts {
+    archives sourcesJar, javadocJar, mmJar
+}
 
-//uploadArchives {
-//    repositories {
-//        mavenDeployer {
-//            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-//
-//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-//                authentication(userName: ossrhUsername, password: ossrhPassword)
-//            }
-//
-//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-//                authentication(userName: ossrhUsername, password: ossrhPassword)
-//            }
-//
-//            pom.project {
-//                name 'Optimus'
-//                packaging 'jar'
-//                // optionally artifactId can be defined here
-//                description 'The optimus core project that manages smart bots and their functioning for test scenarios'
-//                url 'https://bitbucket.org/KrishnanandB/optimus'
-//
-//                scm {
-//                    connection 'scm:https://github.com/testvagrant/optimus.git'
-//                    url 'https://sukesh_testvagrant@bitbucket.org/KrishnanandB/optimus.git'
-//                }
-//
-//                licenses {
-//                    license {
-//                        name 'The Apache License, Version 2.0'
-//                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    }
-//                }
-//                developers {
-//                    developer {
-//                        id 'sukesh'
-//                        name 'Sukesh Kumar'
-//                        email 'sukesh@testvagrant.com'
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+signing {
+    sign configurations.archives
+}
+
+install.dependsOn mmJar
+
+subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
+
+
+group = "com.testvagrant"
+archivesBaseName = "optimus"
+version = "3.0"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Optimus'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'The optimus core project that manages smart bots and their functioning for test scenarios'
+                url 'https://bitbucket.org/KrishnanandB/optimus'
+
+                scm {
+                    connection 'scm:https://github.com/testvagrant/optimus.git'
+                    url 'https://sukesh_testvagrant@bitbucket.org/KrishnanandB/optimus.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'sukesh'
+                        name 'Sukesh Kumar'
+                        email 'sukesh@testvagrant.com'
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 
