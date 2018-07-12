@@ -4,11 +4,9 @@ import com.jayway.awaitility.Awaitility;
 import com.jayway.awaitility.Duration;
 import io.restassured.response.Response;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static io.restassured.RestAssured.given;
 
@@ -50,9 +48,21 @@ public class ServiceClient {
     private List<String> initCommands(String[] args) {
         commands.add("java");
         commands.add("-jar");
-        commands.add(System.getProperty("user.dir") + "/libs/optimus-services-1.0.jar");
+        commands.add(System.getProperty("user.dir") + "/libs/"+getLatestServicesName());
         Collections.addAll(commands, args);
         return commands;
+    }
+
+    private String getLatestServicesName() {
+        File file = new File(System.getProperty("user.dir") + "/libs");
+        if(file.isDirectory()) {
+            File[] files = file.listFiles();
+            Optional<File> first = Arrays.asList(files).stream().filter(serviceFile -> serviceFile.getName().contains("optimus-services")).findFirst();
+            if(first.isPresent()) {
+                return first.get().getName();
+            }
+        }
+        return "optimus-services-1.0";
     }
 
     private String getPort(List<String> commands) {

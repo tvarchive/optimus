@@ -66,7 +66,7 @@ public class ReportParser {
                     JsonArray scenarioArray = feature.getScenarioArray();
                     String featureName = getFeatureName(jsonElement);
                     List<Step> backgroundStepsList = getBackgroundStepsIfPresent(feature);
-
+                    String scenarioUri = jsonElement.getAsJsonObject().get("uri").getAsString();
                     for (JsonElement element : scenarioArray) {
                         try {
                             if (!isBackground(element)) {
@@ -74,6 +74,7 @@ public class ReportParser {
 //                                String featureName = getFeatureName(element);
                                 String deviceName = element.getAsJsonObject().get("before").getAsJsonArray().get(0).getAsJsonObject()
                                         .get("output").getAsJsonArray().get(0).getAsString();
+
                                 JsonArray scenarioSteps = element.getAsJsonObject().get("steps").getAsJsonArray();
                                 List<Step> stepList = new ArrayList<>();
                                 stepList.addAll(backgroundStepsList);
@@ -89,6 +90,7 @@ public class ReportParser {
                                             .withSteps(stepList)
                                             .withDeviceName(deviceByUdid.getId())
                                             .withEmbeddedScreen(getEmbeddedScreenshot(element))
+                                            .withScenarioUri(scenarioUri)
                                             .build());
                                 }
                             }

@@ -1,5 +1,5 @@
 group 'com.testvagrant'
-version '3.0'
+version '3.0.1'
 
 
 
@@ -107,13 +107,13 @@ signing {
 }
 
 install.dependsOn mmJar
-
+//
 subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
 
 group = "com.testvagrant"
 archivesBaseName = "optimus"
-version = "3.0"
+version = "3.0.1"
 
 uploadArchives {
     repositories {

@@ -25,6 +25,7 @@ public class ScenariosClient {
                 .header("Content-Type", "application/json")
                 .body(scenario)
                 .post(SCENARIOS);
+        System.out.println(scenario.toString());
         return scenarioId.as(Scenario.class);
     }
 
@@ -37,14 +38,15 @@ public class ScenariosClient {
         return Integer.valueOf(response.asString());
     }
 
-    public Scenario findRelevantScenario(String buildId, String scenarioName, Integer location, String deviceId) {
+    public Scenario findRelevantScenario(String buildId, String featureFileName, String scenarioName, Integer location, String deviceId) {
         Response get = given()
                 .header("Content-Type", "application/json")
                 .queryParam("buildId", buildId)
+                .queryParam("featureFileName",featureFileName)
                 .queryParam("scenarioName", scenarioName)
                 .queryParam("location", location)
                 .queryParam("deviceId", deviceId)
-                .get(SCENARIOS + "/search/findByBuildIdAndScenarioNameAndLocationAndDeviceId");
+                .get(SCENARIOS + "/search/findByBuildIdAndFeatureFileNameAndScenarioNameAndLocationAndDeviceId");
         return get.as(Scenario.class);
     }
 

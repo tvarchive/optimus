@@ -21,6 +21,7 @@ package com.testvagrant.monitor.utils;
 import com.testvagrant.commons.entities.SmartBOT;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
@@ -65,4 +66,18 @@ public class Commons {
             e.printStackTrace();
         }
     }
+
+
+    public String getFeatureFileName(String scenarioUri) {
+        String featureFileName = "";
+        try {
+             featureFileName = scenarioUri.substring(scenarioUri.lastIndexOf(File.separator) + 1, scenarioUri.indexOf(".feature"));
+            System.out.println(featureFileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "dummyfeaturefile";
+        }
+        return featureFileName;
+    }
+
 }

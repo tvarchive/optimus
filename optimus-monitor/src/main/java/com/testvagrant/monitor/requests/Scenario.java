@@ -2,6 +2,7 @@ package com.testvagrant.monitor.requests;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class Scenario {
     private String stacktrace;
     private String activity;
     private String featureName;
+    private String featureFileName;
 
     public String getDeviceId() {
         return deviceId;
@@ -172,5 +174,38 @@ public class Scenario {
 
     public void setActivity(String activity) {
         this.activity = activity;
+    }
+
+    public String getFeatureFileName() {
+        return featureFileName;
+    }
+
+    public void setFeatureFileName(String featureFileName) {
+        this.featureFileName = featureFileName;
+    }
+
+    @Override
+    public String toString() {
+        return "{"
+                + "\"id\":\"" + id + "\""
+                + ", \"scenarioName\":\"" + scenarioName + "\""
+                + ", \"dataRowNumber\":\"" + dataRowNumber + "\""
+                + ", \"location\":\"" + location + "\""
+                + ", \"tags\":" + tags
+                + ", \"startTime\":" + startTime
+                + ", \"buildId\":\"" + buildId + "\""
+                + ", \"deviceId\":\"" + deviceId + "\""
+                + ", \"status\":\"" + status + "\""
+                + ", \"completed\":\"" + completed + "\""
+                + ", \"endTime\":" + endTime
+                + ", \"timeTaken\":\"" + timeTaken + "\""
+                + ", \"scenarioTimeline\":\"" + scenarioTimeline + "\""
+                + ", \"steps\":\"" + steps + "\""
+                + ", \"failedOnScreen\":" + Arrays.toString(failedOnScreen)
+                + ", \"stacktrace\":\"" + stacktrace + "\""
+                + ", \"activity\":\"" + activity + "\""
+                + ", \"featureName\":\"" + featureName + "\""
+                + ", \"featureFileName\":\"" + featureFileName + "\""
+                + "}";
     }
 }

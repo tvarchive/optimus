@@ -54,4 +54,9 @@ public class ScenarioBuilder {
         scenario.setEmbeddedFailedScreen(screen);
         return this;
     }
+
+    public ScenarioBuilder withScenarioUri(String uri) {
+        scenario.setScenarioUri(uri);
+        return this;
+    }
 }

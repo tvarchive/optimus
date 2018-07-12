@@ -8,6 +8,7 @@ import com.testvagrant.monitor.clients.ScenariosClient;
 import com.testvagrant.monitor.entities.ScenarioTimeline;
 import com.testvagrant.monitor.requests.Scenario;
 import com.testvagrant.monitor.requests.Screenshot;
+import com.testvagrant.monitor.utils.Commons;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         Scenario scenario = new Scenario();
         scenario.setScenarioName(smartBOT.getScenario().getName());
         scenario.setStartTime(new Date());
-//        scenario.setDeviceUdid(smartBOT.getDeviceUdid());
+        scenario.setFeatureFileName(new Commons().getFeatureFileName(smartBOT.getScenario().getUri()));
         scenario.setDeviceId(smartBOT.getDeviceId());
         scenario.setTags(smartBOT.getScenario().getSourceTagNames());
         scenario.setBuildId(getLatestBuild());
@@ -29,6 +30,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
     @Override
     public void notifyScenarioCompletion(SmartBOT smartBOT) {
         Scenario scenario = new ScenariosClient().findRelevantScenario(getLatestBuild(),
+                new Commons().getFeatureFileName(smartBOT.getScenario().getUri()),
                 smartBOT.getScenario().getName(),
                 getLocation(smartBOT),
                 smartBOT.getDeviceId());
@@ -47,7 +49,7 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
     @Override
     public String getLatestRecordFor(ExecutedScenario scenario) {
         Scenario executedScenario = getScenarioByNameAndLocation(scenario);
-        Scenario relevantScenario = new ScenariosClient().findRelevantScenario(getLatestBuild(), executedScenario.getScenarioName(), executedScenario.getLocation(), scenario.getDeviceName());
+        Scenario relevantScenario = new ScenariosClient().findRelevantScenario(getLatestBuild(), new Commons().getFeatureFileName(scenario.getScenarioUri()),executedScenario.getScenarioName(), executedScenario.getLocation(), scenario.getDeviceName());
         return relevantScenario.getId();
     }
 
@@ -115,13 +117,13 @@ public class ScenariosServiceImpl extends OptimusServiceImpl implements Scenario
         System.out.println("Scenario Location is " + location);
         System.out.println("Device Id is " + executedScenario.getDeviceName());
         System.out.println("Latest buildId " + getLatestBuild());
-        return new ScenariosClient().findRelevantScenario(getLatestBuild(), scenarioName, Integer.parseInt(location), executedScenario.getDeviceName());
+        return new ScenariosClient().findRelevantScenario(getLatestBuild(), new Commons().getFeatureFileName(executedScenario.getScenarioUri()),scenarioName, Integer.parseInt(location), executedScenario.getDeviceName());
     }
 
     private Scenario getScenario(SmartBOT smartBOT) {
         Scenario scenario = null;
         ScenariosClient scenariosClient = new ScenariosClient();
-        scenario = scenariosClient.findRelevantScenario(getLatestBuild(), smartBOT.getScenario().getName(), getLocation(smartBOT), smartBOT.getDeviceId());
+        scenario = scenariosClient.findRelevantScenario(getLatestBuild(), new Commons().getFeatureFileName(smartBOT.getScenario().getUri()),smartBOT.getScenario().getName(), getLocation(smartBOT), smartBOT.getDeviceId());
         return scenario;
     }
 

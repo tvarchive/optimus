@@ -25,6 +25,7 @@ public class ExecutedScenario {
     private List<Step> steps;
     private byte[] embeddedFailedScreen;
     private String featureName;
+    private String scenarioUri;
 
     public String getFeatureName() {
         return featureName;
@@ -64,5 +65,13 @@ public class ExecutedScenario {
 
     public void setSteps(List<Step> steps) {
         this.steps = steps;
+    }
+
+    public String getScenarioUri() {
+        return scenarioUri;
+    }
+
+    public void setScenarioUri(String scenarioUri) {
+        this.scenarioUri = scenarioUri;
     }
 }
