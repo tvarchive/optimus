@@ -23,6 +23,8 @@ import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.exec.OS;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -227,9 +229,12 @@ public class OnDevice {
 
     protected void swipeFromTo(WebElement startElement, WebElement stopElement) {
 //        driver.swipe(startElement.getLocation().getX(), startElement.getLocation().getY(), stopElement.getLocation().getX(), stopElement.getLocation().getY(), 1000);
-        new TouchAction(driver).press(startElement.getLocation().getX(), startElement.getLocation().getY())
-                .waitAction(Duration.ofMillis(1000))
-                .moveTo(stopElement.getLocation().getX(), stopElement.getLocation().getY())
+        PointOption startPoint = PointOption.point(startElement.getLocation().getX(), startElement.getLocation().getY());
+        PointOption stopPoint = PointOption.point(stopElement.getLocation().getX(), stopElement.getLocation().getY());
+
+        new TouchAction(driver).press(startPoint)
+                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(1000)))
+                .moveTo(stopPoint)
                 .release().perform();
     }
 

@@ -52,7 +52,7 @@ allprojects {
         compile group: 'org.apache.opennlp', name: 'opennlp-tools', version: '1.6.0'
         compile group: 'org.apache.opennlp', name: 'opennlp-uima', version: '1.6.0'
         compile group: 'org.json', name: 'json', version: '20160810'
-        compile group: 'io.appium', name: 'java-client', version: '5.0.4'
+        compile group: 'io.appium', name: 'java-client', version: '6.1.0'
         compile group: 'org.codehaus.jackson', name: 'jackson-jaxrs', version: '1.8.5'
         compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.0.pr4'
         compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.0.pr4'
