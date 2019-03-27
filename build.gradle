@@ -1,5 +1,5 @@
 group 'com.testvagrant'
-version '3.0.2'
+version '3.1.0'
 
 
 
@@ -28,7 +28,7 @@ allprojects {
         jcenter()
     }
 
-    ext.cukesVersion = '2.1.0'
+    ext.cukesVersion = '4.2.6'
 
     dependencies {
         compile group: 'io.cucumber', name: 'cucumber-junit', version: "$cukesVersion"
@@ -113,7 +113,7 @@ subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
 group = "com.testvagrant"
 archivesBaseName = "optimus"
-version = "3.0.2"
+version = "3.1.0"
 
 uploadArchives {
     repositories {
