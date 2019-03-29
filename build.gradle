@@ -152,6 +152,10 @@ uploadArchives {
                         name 'Sukesh Kumar'
                         email 'sukesh@testvagrant.com'
                     }
+                    developer {
+                        name 'Krishnanand B'
+//                        email 'krishna@testvagrant.com'
+                    }
                 }
             }
         }
