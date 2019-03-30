@@ -1,5 +1,5 @@
 group 'com.testvagrant'
-version '3.0.1'
+version '3.1.0'
 
 
 
@@ -28,11 +28,12 @@ allprojects {
         jcenter()
     }
 
-    ext.cukesVersion = '2.1.0'
+    ext.cukesVersion = '4.2.6'
 
     dependencies {
         compile group: 'io.cucumber', name: 'cucumber-junit', version: "$cukesVersion"
         compile group: 'io.cucumber', name: 'cucumber-core', version: "$cukesVersion"
+        compile group: 'io.cucumber', name: 'cucumber-java', version: "$cukesVersion"
         compile group: 'io.cucumber', name: 'cucumber-java8', version: "$cukesVersion"
         compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
         compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
@@ -113,7 +114,7 @@ subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
 group = "com.testvagrant"
 archivesBaseName = "optimus"
-version = "3.0.1"
+version = "3.1.0"
 
 uploadArchives {
     repositories {
@@ -151,6 +152,11 @@ uploadArchives {
                         id 'sukesh'
                         name 'Sukesh Kumar'
                         email 'sukesh@testvagrant.com'
+                    },
+                    developer {
+                        id 'krishnanandb'
+                        name 'Krishnanand B'
+                        email 'krishnanand@testvagrant.com'
                     }
                 }
             }
