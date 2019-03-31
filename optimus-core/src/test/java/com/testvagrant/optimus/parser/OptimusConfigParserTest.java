@@ -10,7 +10,7 @@ public class OptimusConfigParserTest {
             "  \"executionDetails\": {\n" +
             "    \"appium_js_path\": \"/usr/local/bin/appium\",\n" +
             "    \"appium_node_path\": \"/usr/local/bin/node\",\n" +
-            "    \"runConfig\":\"GoRide\"\n" +
+            "    \"runConfig\":\"appRide\"\n" +
             "  },\n" +
             "  \"testFeed\":[\n" +
             "    {\n" +
@@ -105,7 +105,7 @@ public class OptimusConfigParserTest {
     public void execDetailsWithRunConfig() {
         OptimusConfigParser optimusConfigParser = new OptimusConfigParser(appJsonWithRunConfig);
         ExecutionDetails executionDetails = optimusConfigParser.getExecutionDetails();
-        Assert.assertEquals("GoRide",executionDetails.getRunConfig());
+        Assert.assertEquals("AppRide",executionDetails.getRunConfig());
     }
 
     @Test
