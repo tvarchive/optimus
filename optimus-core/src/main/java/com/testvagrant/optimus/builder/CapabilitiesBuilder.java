@@ -26,6 +26,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.Iterator;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CapabilitiesBuilder {
     private DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -43,6 +44,7 @@ public class CapabilitiesBuilder {
         capabilities.setCapability("app", app.getAbsolutePath());
         capabilities.setCapability("udid", device.getUdid());
         capabilities.setCapability("deviceName", device.getDeviceName());
+        capabilities.setCapability("systemPort", ThreadLocalRandom.current().nextInt(0, 65000));
         initializeCapabilities();
     }
 
