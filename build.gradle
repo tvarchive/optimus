@@ -158,10 +158,6 @@ uploadArchives {
                         name 'Krishnanand B'
                         email 'krishnanand@testvagrant.com'
                     }
-                    developer {
-                        name 'Krishnanand B'
-//                        email 'krishna@testvagrant.com'
-                    }
                 }
             }
         }
