@@ -95,6 +95,8 @@ public class AndroidOnlyCapabilities {
 
     private boolean autoGrantPermissions;
 
+    private int systemPort;
+
     public String getAvd() {
         return avd;
     }
@@ -398,5 +400,13 @@ public class AndroidOnlyCapabilities {
 
     public void setAutoGrantPermissions(boolean autoGrantPermissions) {
         this.autoGrantPermissions = autoGrantPermissions;
+    }
+
+    public int getSystemPort() {
+        return systemPort;
+    }
+
+    public void setSystemPort(int systemPort) {
+        this.systemPort = systemPort;
     }
 }
