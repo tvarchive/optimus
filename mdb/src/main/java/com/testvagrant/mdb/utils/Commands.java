@@ -18,7 +18,7 @@ public interface Commands {
         String INSTRUMENTS_HEADER = "Known Devices:";
         String LIST_ALL_DEVICES = "instruments -s devices | grep 'iPhone'";
         String SIMULATOR_UDID_PATTERN = "[a-zA-Z0-9-]{36}";
-        String DEVICE_UDID_PATTERN = "[a-zA-Z0-9]{40}";
+        String DEVICE_UDID_PATTERN = "[a-zA-Z0-9-]{25,40}";
         String LAPTOP_NAME = "MacBook";
         String XCODE_INSTALLATION = "xcode-select -p";
         String XCODE_INSTALLATION_DETAILS = "gcc --version";
