@@ -30,7 +30,7 @@ public class DeviceIdentifierTest {
     @Before
     public void setup() {
         simulatorUDID = "661F45B1-D225-57C8-80C7-F8BA4A613E56";
-        deviceUDID = "181e41f71699aa7a374218a4d29bad7ee9b333b5";
+        deviceUDID = "00008020-00117D9234D1002E";
 
     }
 
@@ -42,7 +42,7 @@ public class DeviceIdentifierTest {
 
     @Test
     public void isDevice() {
-        String deviceRegex = "[a-zA-Z0-9]{40}";
+        String deviceRegex = "[a-zA-Z0-9-]{25,40}";
         assertEquals(deviceUDID.matches(deviceRegex),true);
     }
 }
