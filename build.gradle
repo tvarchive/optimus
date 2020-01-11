@@ -114,7 +114,7 @@ subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
 group = "com.testvagrant"
 archivesBaseName = "optimus"
-version = "3.1.0"
+version = "3.1.2"
 
 uploadArchives {
     repositories {
