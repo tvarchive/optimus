@@ -19,6 +19,8 @@ package com.testvagrant.optimus.builder;
 
 import com.testvagrant.commons.entities.DeviceDetails;
 import com.testvagrant.monitor.requests.Device;
+import com.testvagrant.optimus.utils.AppiumServerManager;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -44,7 +46,7 @@ public class CapabilitiesBuilder {
         capabilities.setCapability("app", app.getAbsolutePath());
         capabilities.setCapability("udid", device.getUdid());
         capabilities.setCapability("deviceName", device.getDeviceName());
-        capabilities.setCapability("systemPort", ThreadLocalRandom.current().nextInt(0, 65000));
+        capabilities.setCapability("systemPort", AppiumServerManager.aRandomOpenPortOnAllLocalInterfaces());
         initializeCapabilities();
     }
 

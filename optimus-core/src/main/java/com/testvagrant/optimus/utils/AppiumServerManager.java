@@ -75,7 +75,7 @@ public class AppiumServerManager {
     }
 
 
-    public Integer aRandomOpenPortOnAllLocalInterfaces() {
+    public static Integer aRandomOpenPortOnAllLocalInterfaces() {
         try (
                 ServerSocket socket = new ServerSocket(0);
         ) {
