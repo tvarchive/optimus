@@ -53,7 +53,7 @@ public class AppiumServerManager {
         AppiumServiceBuilder appiumServiceBuilder = new AppiumServiceBuilder()
                 .usingDriverExecutable(new File(executionDetails.getAppium_node_path()))
                 .withAppiumJS(new File(executionDetails.getAppium_js_path()))
-                .withIPAddress("127.0.0.1")
+                .withIPAddress(System.getProperty("appiumHost", "127.0.0.1"))
                 .withArgument(SESSION_OVERRIDE)
                 .usingAnyFreePort()
                 .withLogFile(new File(String.format("build" + File.separator + "%s.log", scenarioName + "_" + udid)));
