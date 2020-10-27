@@ -22,7 +22,17 @@ public class ExecutionDetails {
     private String appium_js_path = "/usr/local/bin/appium";
     private String appium_node_path = "/usr/local/bin/node";
     private String runConfig = "default";
+    private String ipAddress = "127.0.0.1";
 
+    public void setIpAddress(String ipAddress)
+    {
+        this.ipAddress = ipAddress;
+    }
+
+    public String getIpAddress()
+    {
+        return this.ipAddress;
+    }
 
     public String getAppium_js_path() {
         return appium_js_path;
